@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkshopsRouteImport } from './routes/workshops'
+import { Route as StarterKitRouteImport } from './routes/starter-kit'
 import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as CustomRouteImport } from './routes/custom'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as IndexRouteImport } from './routes/index'
@@ -20,9 +22,19 @@ const WorkshopsRoute = WorkshopsRouteImport.update({
   path: '/workshops',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StarterKitRoute = StarterKitRouteImport.update({
+  id: '/starter-kit',
+  path: '/starter-kit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GalleryRoute = GalleryRouteImport.update({
   id: '/gallery',
   path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CustomRoute = CustomRouteImport.update({
+  id: '/custom',
+  path: '/custom',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -45,14 +57,18 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
+  '/custom': typeof CustomRoute
   '/gallery': typeof GalleryRoute
+  '/starter-kit': typeof StarterKitRoute
   '/workshops': typeof WorkshopsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
+  '/custom': typeof CustomRoute
   '/gallery': typeof GalleryRoute
+  '/starter-kit': typeof StarterKitRoute
   '/workshops': typeof WorkshopsRoute
 }
 export interface FileRoutesById {
@@ -60,22 +76,48 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
+  '/custom': typeof CustomRoute
   '/gallery': typeof GalleryRoute
+  '/starter-kit': typeof StarterKitRoute
   '/workshops': typeof WorkshopsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/book' | '/contact' | '/gallery' | '/workshops'
+  fullPaths:
+    | '/'
+    | '/book'
+    | '/contact'
+    | '/custom'
+    | '/gallery'
+    | '/starter-kit'
+    | '/workshops'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/book' | '/contact' | '/gallery' | '/workshops'
-  id: '__root__' | '/' | '/book' | '/contact' | '/gallery' | '/workshops'
+  to:
+    | '/'
+    | '/book'
+    | '/contact'
+    | '/custom'
+    | '/gallery'
+    | '/starter-kit'
+    | '/workshops'
+  id:
+    | '__root__'
+    | '/'
+    | '/book'
+    | '/contact'
+    | '/custom'
+    | '/gallery'
+    | '/starter-kit'
+    | '/workshops'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BookRoute: typeof BookRoute
   ContactRoute: typeof ContactRoute
+  CustomRoute: typeof CustomRoute
   GalleryRoute: typeof GalleryRoute
+  StarterKitRoute: typeof StarterKitRoute
   WorkshopsRoute: typeof WorkshopsRoute
 }
 
@@ -88,11 +130,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkshopsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/starter-kit': {
+      id: '/starter-kit'
+      path: '/starter-kit'
+      fullPath: '/starter-kit'
+      preLoaderRoute: typeof StarterKitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/gallery': {
       id: '/gallery'
       path: '/gallery'
       fullPath: '/gallery'
       preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/custom': {
+      id: '/custom'
+      path: '/custom'
+      fullPath: '/custom'
+      preLoaderRoute: typeof CustomRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -123,7 +179,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BookRoute: BookRoute,
   ContactRoute: ContactRoute,
+  CustomRoute: CustomRoute,
   GalleryRoute: GalleryRoute,
+  StarterKitRoute: StarterKitRoute,
   WorkshopsRoute: WorkshopsRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { format } from "date-fns";
-import { CalendarIcon, CheckCircle2, Sparkles } from "lucide-react";
+import { CalendarIcon, CheckCircle2, Sparkles, Plus, Minus, User } from "lucide-react";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -52,36 +52,60 @@ const workshops = [
   { id: "private", name: "Private / Team Building (enquire)", price: 0 },
 ];
 
+type Guest = { name: string; workshop: string };
+
+const guestSchema = z.object({
+  name: z.string().trim().min(2, "Each guest needs a name").max(80),
+  workshop: z.string().min(1, "Each guest needs a workshop"),
+});
+
 const bookingSchema = z.object({
-  workshop: z.string().min(1, "Please choose a workshop"),
   date: z.date({ required_error: "Please pick a date" }),
-  guests: z.coerce.number().min(1).max(20),
-  name: z.string().trim().min(2, "Please enter your name").max(80),
+  guests: z.array(guestSchema).min(1, "At least 1 guest required"),
+  contactName: z.string().trim().min(2, "Please enter your name").max(80),
   email: z.string().trim().email("Please enter a valid email").max(120),
   phone: z.string().trim().min(7, "Please enter a contact number").max(20),
   notes: z.string().max(500).optional(),
 });
 
 function BookPage() {
-  const [workshop, setWorkshop] = useState("");
   const [date, setDate] = useState<Date | undefined>();
-  const [guests, setGuests] = useState("1");
-  const [name, setName] = useState("");
+  const [guests, setGuests] = useState<Guest[]>([{ name: "", workshop: "" }]);
+  const [contactName, setContactName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
-  const [submitted, setSubmitted] = useState<null | { workshop: string; date: Date; guests: number; name: string }>(null);
+  const [submitted, setSubmitted] = useState<null | { date: Date; guests: Guest[]; contactName: string }>(null);
 
-  const selected = workshops.find((w) => w.id === workshop);
-  const total = selected && selected.price > 0 ? selected.price * Number(guests || 1) : null;
+  const updateGuest = (idx: number, patch: Partial<Guest>) => {
+    setGuests((g) => g.map((x, i) => (i === idx ? { ...x, ...patch } : x)));
+  };
+
+  const addGuest = () => {
+    if (guests.length >= 20) return;
+    setGuests((g) => [...g, { name: "", workshop: "" }]);
+  };
+
+  const removeGuest = (idx: number) => {
+    if (guests.length <= 1) return;
+    setGuests((g) => g.filter((_, i) => i !== idx));
+  };
+
+  const total = guests.reduce((sum, g) => {
+    const w = workshops.find((x) => x.id === g.workshop);
+    return sum + (w?.price ?? 0);
+  }, 0);
+  const hasOnRequest = guests.some((g) => {
+    const w = workshops.find((x) => x.id === g.workshop);
+    return w && w.price === 0;
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const result = bookingSchema.safeParse({
-      workshop,
       date,
       guests,
-      name,
+      contactName,
       email,
       phone,
       notes,
@@ -90,12 +114,7 @@ function BookPage() {
       toast.error(result.error.issues[0]?.message ?? "Please check the form");
       return;
     }
-    setSubmitted({
-      workshop: selected?.name ?? "",
-      date: result.data.date,
-      guests: result.data.guests,
-      name: result.data.name,
-    });
+    setSubmitted({ date: result.data.date, guests, contactName });
     toast.success("Booking request received!", {
       description: "We'll be in touch on WhatsApp shortly to confirm.",
     });
@@ -109,15 +128,26 @@ function BookPage() {
         </div>
         <p className="mt-6 font-script text-2xl text-primary">All booked!</p>
         <h1 className="mt-2 font-display text-4xl lg:text-5xl font-semibold text-balance">
-          See you soon, {submitted.name.split(" ")[0]}.
+          See you soon, {submitted.contactName.split(" ")[0]}.
         </h1>
         <p className="mt-5 text-muted-foreground leading-relaxed">
-          We've received your booking request for{" "}
-          <strong className="text-foreground">{submitted.workshop}</strong> on{" "}
-          <strong className="text-foreground">{format(submitted.date, "EEEE, d MMMM yyyy")}</strong>{" "}
-          for {submitted.guests} {submitted.guests === 1 ? "person" : "people"}.
+          We've received your booking for{" "}
+          <strong className="text-foreground">{submitted.guests.length}</strong>{" "}
+          {submitted.guests.length === 1 ? "person" : "people"} on{" "}
+          <strong className="text-foreground">{format(submitted.date, "EEEE, d MMMM yyyy")}</strong>.
         </p>
-        <p className="mt-3 text-sm text-muted-foreground">
+        <ul className="mt-6 text-sm text-left max-w-sm mx-auto space-y-2 bg-secondary/40 rounded-2xl p-5">
+          {submitted.guests.map((g, i) => {
+            const w = workshops.find((x) => x.id === g.workshop);
+            return (
+              <li key={i} className="flex justify-between gap-4">
+                <span className="text-foreground font-medium">{g.name}</span>
+                <span className="text-muted-foreground text-right">{w?.name}</span>
+              </li>
+            );
+          })}
+        </ul>
+        <p className="mt-6 text-sm text-muted-foreground">
           A confirmation will follow via WhatsApp within 24 hours.
         </p>
         <Button
@@ -125,10 +155,9 @@ function BookPage() {
           className="mt-8 rounded-full"
           onClick={() => {
             setSubmitted(null);
-            setWorkshop("");
             setDate(undefined);
-            setGuests("1");
-            setName("");
+            setGuests([{ name: "", workshop: "" }]);
+            setContactName("");
             setEmail("");
             setPhone("");
             setNotes("");
@@ -149,112 +178,171 @@ function BookPage() {
             Reserve your workshop.
           </h1>
           <p className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto">
-            Tell us a bit about you and your group. We'll confirm your spot via WhatsApp.
+            Coming as a group? Each guest can pick their own piece — we'll set up everything.
           </p>
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-6 lg:px-10 py-16 grid lg:grid-cols-5 gap-10">
         {/* FORM */}
-        <form onSubmit={handleSubmit} className="lg:col-span-3 space-y-6 bg-background rounded-3xl border border-border p-8 lg:p-10 shadow-soft">
-          <div>
-            <Label htmlFor="workshop" className="mb-2 block">Workshop</Label>
-            <Select value={workshop} onValueChange={setWorkshop}>
-              <SelectTrigger id="workshop" className="h-12 rounded-xl">
-                <SelectValue placeholder="Choose a workshop" />
-              </SelectTrigger>
-              <SelectContent>
-                {workshops.map((w) => (
-                  <SelectItem key={w.id} value={w.id}>
-                    {w.name}
-                    {w.price > 0 ? ` — R${w.price}` : ""}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+        <form onSubmit={handleSubmit} className="lg:col-span-3 space-y-6">
+          {/* Date */}
+          <div className="bg-background rounded-3xl border border-border p-8 shadow-soft">
+            <h2 className="font-display text-xl font-semibold mb-4">Pick a date</h2>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={cn(
+                    "w-full h-12 rounded-xl justify-start text-left font-normal",
+                    !date && "text-muted-foreground",
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {date ? format(date, "PPP") : "Pick a date"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-6">
-            <div>
-              <Label className="mb-2 block">Preferred date</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className={cn(
-                      "w-full h-12 rounded-xl justify-start text-left font-normal",
-                      !date && "text-muted-foreground",
+          {/* Guests */}
+          <div className="bg-background rounded-3xl border border-border p-8 shadow-soft">
+            <div className="flex items-center justify-between mb-1">
+              <h2 className="font-display text-xl font-semibold">Guests</h2>
+              <span className="text-sm text-muted-foreground">{guests.length} {guests.length === 1 ? "person" : "people"}</span>
+            </div>
+            <p className="text-sm text-muted-foreground mb-5">Each guest can choose their own workshop item.</p>
+
+            <div className="space-y-4">
+              {guests.map((g, i) => (
+                <div key={i} className="rounded-2xl border border-border bg-muted/30 p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm font-medium text-primary">
+                      <div className="h-7 w-7 rounded-full bg-gradient-teal text-primary-foreground flex items-center justify-center">
+                        <User className="h-3.5 w-3.5" />
+                      </div>
+                      Guest {i + 1}
+                    </div>
+                    {guests.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeGuest(i)}
+                        className="text-xs text-muted-foreground hover:text-destructive transition-colors"
+                      >
+                        Remove
+                      </button>
                     )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP") : "Pick a date"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
-                    initialFocus
-                    className={cn("p-3 pointer-events-auto")}
-                  />
-                </PopoverContent>
-              </Popover>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div>
+                      <Label htmlFor={`guest-name-${i}`} className="mb-1.5 block text-xs">Name</Label>
+                      <Input
+                        id={`guest-name-${i}`}
+                        value={g.name}
+                        onChange={(e) => updateGuest(i, { name: e.target.value })}
+                        className="h-10 rounded-xl bg-background"
+                        placeholder="Full name"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor={`guest-workshop-${i}`} className="mb-1.5 block text-xs">Workshop choice</Label>
+                      <Select
+                        value={g.workshop}
+                        onValueChange={(v) => updateGuest(i, { workshop: v })}
+                      >
+                        <SelectTrigger id={`guest-workshop-${i}`} className="h-10 rounded-xl bg-background">
+                          <SelectValue placeholder="Choose item" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {workshops.map((w) => (
+                            <SelectItem key={w.id} value={w.id}>
+                              {w.name}{w.price > 0 ? ` — R${w.price}` : ""}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-5 flex items-center gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={addGuest}
+                disabled={guests.length >= 20}
+                className="rounded-full"
+              >
+                <Plus className="h-4 w-4 mr-1.5" /> Add another guest
+              </Button>
+              {guests.length > 1 && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => removeGuest(guests.length - 1)}
+                  className="rounded-full"
+                >
+                  <Minus className="h-4 w-4 mr-1.5" /> Remove last
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Contact */}
+          <div className="bg-background rounded-3xl border border-border p-8 shadow-soft space-y-5">
+            <h2 className="font-display text-xl font-semibold">Your contact details</h2>
+
+            <div className="grid sm:grid-cols-2 gap-5">
+              <div>
+                <Label htmlFor="cname" className="mb-2 block">Your name</Label>
+                <Input id="cname" value={contactName} onChange={(e) => setContactName(e.target.value)} className="h-11 rounded-xl" placeholder="Jane Doe" />
+              </div>
+              <div>
+                <Label htmlFor="phone" className="mb-2 block">WhatsApp number</Label>
+                <Input id="phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className="h-11 rounded-xl" placeholder="+27 ..." />
+              </div>
             </div>
 
             <div>
-              <Label htmlFor="guests" className="mb-2 block">Number of guests</Label>
-              <Input
-                id="guests"
-                type="number"
-                min={1}
-                max={20}
-                value={guests}
-                onChange={(e) => setGuests(e.target.value)}
-                className="h-12 rounded-xl"
+              <Label htmlFor="email" className="mb-2 block">Email</Label>
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="h-11 rounded-xl" placeholder="you@example.com" />
+            </div>
+
+            <div>
+              <Label htmlFor="notes" className="mb-2 block">Anything else? <span className="text-muted-foreground font-normal">(Optional)</span></Label>
+              <Textarea
+                id="notes"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={3}
+                className="rounded-xl resize-none"
+                placeholder="Special occasions, colour preferences, accessibility needs..."
               />
             </div>
-          </div>
 
-          <div className="grid sm:grid-cols-2 gap-6">
-            <div>
-              <Label htmlFor="name" className="mb-2 block">Your name</Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="h-12 rounded-xl" placeholder="Jane Doe" />
-            </div>
-            <div>
-              <Label htmlFor="phone" className="mb-2 block">WhatsApp number</Label>
-              <Input id="phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className="h-12 rounded-xl" placeholder="+27 ..." />
-            </div>
+            <Button
+              type="submit"
+              className="w-full h-12 rounded-full bg-gradient-teal text-primary-foreground hover:opacity-95 shadow-soft hover:shadow-elevated transition-all text-base"
+            >
+              Request Booking
+            </Button>
+            <p className="text-xs text-center text-muted-foreground">
+              This is a request — we'll confirm availability before charging anything.
+            </p>
           </div>
-
-          <div>
-            <Label htmlFor="email" className="mb-2 block">Email</Label>
-            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 rounded-xl" placeholder="you@example.com" />
-          </div>
-
-          <div>
-            <Label htmlFor="notes" className="mb-2 block">Anything else? <span className="text-muted-foreground font-normal">(Optional)</span></Label>
-            <Textarea
-              id="notes"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={4}
-              className="rounded-xl resize-none"
-              placeholder="Special occasions, colour preferences, accessibility needs..."
-            />
-          </div>
-
-          <Button
-            type="submit"
-            className="w-full h-12 rounded-full bg-gradient-teal text-primary-foreground hover:opacity-95 shadow-soft hover:shadow-elevated transition-all text-base"
-          >
-            Request Booking
-          </Button>
-          <p className="text-xs text-center text-muted-foreground">
-            This is a request — we'll confirm availability before charging anything.
-          </p>
         </form>
 
         {/* SUMMARY */}
@@ -268,11 +356,6 @@ function BookPage() {
               </div>
 
               <div className="mt-6 space-y-5 text-sm">
-                <div>
-                  <p className="text-primary-foreground/70 text-xs uppercase tracking-wider">Workshop</p>
-                  <p className="mt-1 font-display text-xl font-semibold">{selected?.name ?? "Not selected"}</p>
-                </div>
-
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-primary-foreground/70 text-xs uppercase tracking-wider">Date</p>
@@ -280,24 +363,41 @@ function BookPage() {
                   </div>
                   <div>
                     <p className="text-primary-foreground/70 text-xs uppercase tracking-wider">Guests</p>
-                    <p className="mt-1 font-medium">{guests || 1}</p>
+                    <p className="mt-1 font-medium">{guests.length}</p>
                   </div>
                 </div>
 
-                {selected && (
-                  <div className="border-t border-primary-foreground/20 pt-5">
-                    {total !== null ? (
-                      <div className="flex items-end justify-between">
-                        <span className="text-primary-foreground/70">Estimated total</span>
-                        <span className="font-display text-3xl font-semibold">R{total.toLocaleString()}</span>
-                      </div>
-                    ) : (
-                      <p className="text-primary-foreground/85">
-                        Pricing on request — we'll confirm details based on your group size and preferences.
-                      </p>
-                    )}
+                <div>
+                  <p className="text-primary-foreground/70 text-xs uppercase tracking-wider mb-2">Workshops</p>
+                  <ul className="space-y-2">
+                    {guests.map((g, i) => {
+                      const w = workshops.find((x) => x.id === g.workshop);
+                      return (
+                        <li key={i} className="flex items-start justify-between gap-3 text-sm border-b border-primary-foreground/15 pb-2 last:border-0">
+                          <div className="min-w-0">
+                            <p className="font-medium truncate">{g.name || `Guest ${i + 1}`}</p>
+                            <p className="text-primary-foreground/70 text-xs truncate">{w?.name ?? "Not chosen"}</p>
+                          </div>
+                          <span className="shrink-0 text-sm">
+                            {w && w.price > 0 ? `R${w.price}` : w ? "On request" : "—"}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+
+                <div className="border-t border-primary-foreground/20 pt-5">
+                  <div className="flex items-end justify-between">
+                    <span className="text-primary-foreground/70">Estimated total</span>
+                    <span className="font-display text-3xl font-semibold">R{total.toLocaleString()}</span>
                   </div>
-                )}
+                  {hasOnRequest && (
+                    <p className="mt-2 text-xs text-primary-foreground/75">
+                      Some items are priced on request — final quote follows.
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="mt-8 rounded-2xl bg-primary-foreground/10 backdrop-blur p-4 text-xs text-primary-foreground/85 leading-relaxed">
