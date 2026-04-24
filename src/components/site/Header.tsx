@@ -6,6 +6,8 @@ const navLinks = [
   { to: "/" as const, label: "Home" },
   { to: "/workshops" as const, label: "Workshops" },
   { to: "/gallery" as const, label: "Gallery" },
+  { to: "/custom" as const, label: "Custom" },
+  { to: "/starter-kit" as const, label: "Starter Kit" },
   { to: "/contact" as const, label: "Contact" },
 ];
 
