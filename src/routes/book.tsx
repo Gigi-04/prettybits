@@ -22,6 +22,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { toast } from "sonner";
+import reservationImg from "@/assets/workshop-reservation.jpg";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
