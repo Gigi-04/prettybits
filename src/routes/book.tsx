@@ -173,14 +173,26 @@ function BookPage() {
   return (
     <>
       <section className="bg-gradient-hero">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 lg:py-20 text-center">
-          <p className="font-script text-2xl text-primary">Book your spot</p>
-          <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance">
-            Reserve your workshop.
-          </h1>
-          <p className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto">
-            Coming as a group? Each guest can pick their own piece — we'll set up everything.
-          </p>
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 lg:py-20 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left">
+            <p className="font-script text-2xl text-primary">Book your spot</p>
+            <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance">
+              Reserve your workshop.
+            </h1>
+            <p className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0">
+              Coming as a group? Each guest can pick their own piece — we'll set up everything.
+            </p>
+          </div>
+          <div className="relative">
+            <div className="absolute -inset-4 bg-gradient-shine rounded-3xl blur-2xl opacity-60" />
+            <img
+              src={reservationImg}
+              alt="Workshop reserved card with resin pigments, dried flowers and a wooden cheeseboard"
+              width={1536}
+              height={1024}
+              className="relative rounded-3xl shadow-elevated w-full h-auto object-cover aspect-[3/2]"
+            />
+          </div>
         </div>
       </section>
 
