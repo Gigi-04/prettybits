@@ -130,14 +130,26 @@ function StarterKitPage() {
   return (
     <>
       <section className="bg-gradient-hero">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 lg:py-20 text-center">
-          <p className="font-script text-2xl text-primary">Make at home</p>
-          <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance">
-            Build your starter kit.
-          </h1>
-          <p className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto">
-            Pick the project, choose your colours and a glitter — we pack everything you need and ship it to your door.
-          </p>
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 lg:py-20 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left">
+            <p className="font-script text-2xl text-primary">Make at home</p>
+            <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance">
+              Build your starter kit.
+            </h1>
+            <p className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0">
+              Pick the project, choose your colours and a glitter — we pack everything you need and ship it to your door.
+            </p>
+          </div>
+          <div className="relative">
+            <div className="absolute -inset-4 bg-gradient-teal opacity-20 blur-3xl rounded-full" />
+            <img
+              src={starterKitImg}
+              alt="PrettyBits resin starter kit with bottles, pigments, glitter, gloves and moulds"
+              width={1920}
+              height={1080}
+              className="relative rounded-3xl shadow-elevated w-full h-auto object-cover aspect-[16/10]"
+            />
+          </div>
         </div>
       </section>
 
