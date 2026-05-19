@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Facebook, MessageCircle, Mail } from "lucide-react";
+import { Instagram, Facebook, MessageCircle, Mail, Music2 } from "lucide-react";
 
 export function Footer() {
   return (
@@ -16,15 +16,18 @@ export function Footer() {
           </p>
           <div className="mt-6 flex gap-3">
             {[
-              { Icon: Instagram, href: "#", label: "Instagram" },
-              { Icon: Facebook, href: "#", label: "Facebook" },
-              { Icon: MessageCircle, href: "#", label: "WhatsApp" },
+              { Icon: Instagram, href: "https://www.instagram.com/prettybitsct?igsh=MXRrcG12enY2Mm5wMA==", label: "Instagram" },
+              {Icon: Music2 , href: "https://www.tiktok.com/@prettybitsct", label: "TikTok" },
+              { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=100054538385752", label: "Facebook" },
+              { Icon: MessageCircle, href: "https://wa.me/message/MXZBFIEX5RD5J1", label: "WhatsApp" },
               { Icon: Mail, href: "#", label: "Email" },
             ].map(({ Icon, href, label }) => (
               <a
                 key={label}
                 href={href}
                 aria-label={label}
+                target="_blank" // Opens in a new tab
+                rel="noopener noreferrer" // Security best practice
                 className="h-10 w-10 rounded-full bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
               >
                 <Icon className="h-4 w-4" />
