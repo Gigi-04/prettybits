@@ -9,6 +9,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
+import { createCustomInquiry } from "@/lib/firestore-writes";
+
+
 
 export const Route = createFileRoute("/custom")({
   head: () => ({
@@ -108,16 +111,32 @@ function CustomPage() {
     return true;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const result = detailsSchema.safeParse({ name, email, phone, deadline, vision });
     if (!result.success) {
       toast.error(result.error.issues[0]?.message ?? "Please check the form");
       return;
     }
-    setSubmitted(true);
-    toast.success("Custom request received!", {
-      description: "We'll review and reply within 1–2 working days.",
-    });
+    try {
+      await createCustomInquiry({
+        occasion,
+        itemType,
+        size,
+        photoCount: photos.length,
+        name,
+        email,
+        phone,
+        deadline: deadline || undefined,
+        vision,
+      });
+      setSubmitted(true);
+      toast.success("Custom request received!", {
+        description: "We'll review and reply within 1–2 working days.",
+      });
+    } catch (err) {
+      console.error("Failed to save custom inquiry", err);
+      toast.error("Could not submit request — please try again.");
+    }
   };
 
   if (submitted) {
