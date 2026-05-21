@@ -49,7 +49,7 @@ function GalleryPage() {
             <figure
               key={i}
               className={`group relative overflow-hidden rounded-2xl shadow-soft ${
-                i === 0 || i === 4 ? "lg:row-span-2 aspect-[3/4] lg:aspect-[3/5]" : "aspect-square"
+                i === 0 || i === 4 ? "lg:row-span-2 aspect-3/4 lg:aspect-3/5" : "aspect-square"
               }`}
             >
               <img
@@ -58,7 +58,7 @@ function GalleryPage() {
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <figcaption className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/70 via-black/20 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
+              <figcaption className="absolute inset-x-0 bottom-0 p-5 bg-linear-to-t from-black/70 via-black/20 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
                 <p className="text-xs uppercase tracking-wider opacity-80">{item.category}</p>
                 <p className="font-display text-xl font-semibold">{item.label}</p>
               </figcaption>

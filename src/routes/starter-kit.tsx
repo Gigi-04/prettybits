@@ -147,7 +147,7 @@ function StarterKitPage() {
               alt="PrettyBits resin starter kit with bottles, pigments, glitter, gloves and moulds"
               width={1920}
               height={1080}
-              className="relative rounded-3xl shadow-elevated w-full h-auto object-cover aspect-[16/10]"
+              className="relative rounded-3xl shadow-elevated w-full h-auto object-cover aspect-16/10"
             />
           </div>
         </div>
@@ -303,7 +303,7 @@ function StarterKitPage() {
 
         {/* SUMMARY */}
         <aside className="lg:col-span-2">
-          <div className="sticky top-28 rounded-3xl bg-gradient-teal text-primary-foreground p-8 shadow-elevated overflow-hidden relative">
+          <div className="sticky top-28 rounded-3xl bg-gradient-teal text-primary-foreground p-8 shadow-elevated overflow-hidden ">
             <div className="absolute inset-0 bg-gradient-shine opacity-40" />
             <div className="relative">
               <div className="flex items-center gap-2 text-accent">

@@ -28,6 +28,7 @@ const products = [
   { img: riverTableImg, name: "River Tables", blurb: "Custom statement furniture, made just for you." },
 ];
 
+
 function HomePage() {
   return (
     <>
@@ -91,9 +92,9 @@ function HomePage() {
               alt="Handcrafted teal and gold resin coasters by PrettyBits"
               width={1920}
               height={1280}
-              className="relative rounded-3xl shadow-elevated w-full h-auto object-cover aspect-[4/5] lg:aspect-[5/6]"
+              className="relative rounded-3xl shadow-elevated w-full h-auto object-cover aspect-4/5 lg:aspect-5/6"
             />
-            <div className="absolute -bottom-6 -left-6 bg-background rounded-2xl shadow-card p-5 max-w-[200px] hidden sm:block">
+            <div className="absolute -bottom-6 -left-6 bg-background rounded-2xl shadow-card p-5 max-w-200px hidden sm:block">
               <p className="font-script text-xl text-primary">Just poured</p>
               <p className="text-xs text-muted-foreground mt-1">Each piece, one of a kind. No two are ever the same.</p>
             </div>

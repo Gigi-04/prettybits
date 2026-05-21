@@ -1,3 +1,17 @@
+interface WorkshopItem {
+  name: string;
+  price: number;
+}
+
+interface WorkshopSession {
+  id: string;
+  date: any;
+  time: string;
+  remainingSlots: number;
+  totalSlots: number;
+  "available items": WorkshopItem[];
+}
+
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { format } from "date-fns";
@@ -22,6 +36,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { toast } from "sonner";
+import { useFirestoreCollection } from "@/hooks/useFirestoreCollection";
 import reservationImg from "@/assets/workshop-reservation.jpg";
 
 export const Route = createFileRoute("/book")({
@@ -70,6 +85,7 @@ const bookingSchema = z.object({
 });
 
 function BookPage() {
+  const { data: sessions, loading, error } = useFirestoreCollection<WorkshopSession>("workshops");
   const [date, setDate] = useState<Date | undefined>();
   const [guests, setGuests] = useState<Guest[]>([{ name: "", workshop: "" }]);
   const [contactName, setContactName] = useState("");
@@ -77,6 +93,41 @@ function BookPage() {
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
   const [submitted, setSubmitted] = useState<null | { date: Date; guests: Guest[]; contactName: string }>(null);
+
+  const todayMidnight = new Date();
+  todayMidnight.setHours(0, 0, 0, 0);
+
+  const availableSessions = sessions.filter((session) => {
+    try {
+      // Check if it's a Firestore timestamp (has a toDate method), otherwise fallback to standard parsing
+      const parsedDate = session.date && typeof session.date.toDate === 'function' 
+        ? session.date.toDate() 
+        : new Date(session.date);
+
+      return parsedDate >= todayMidnight;
+    } catch {
+      return false;
+    }
+  });
+
+  const currentSession = availableSessions.find((session) => {
+    if (!date) return false;
+    const parsedSessionDate = session.date && typeof session.date.toDate === 'function'
+      ? session.date.toDate()
+      : new Date(session.date);
+
+    const sessionDateString = format(parsedSessionDate, "yyyy-MM-dd");
+    const selectedDateString = format(date, "yyyy-MM-dd");
+    return sessionDateString === selectedDateString;
+  });
+
+  const getSelectedWorkshop = (workshopJsonString: string): WorkshopItem | null => {
+    try {
+      return JSON.parse(workshopJsonString) as WorkshopItem;
+    } catch {
+      return null;
+    }
+  };
 
   const updateGuest = (idx: number, patch: Partial<Guest>) => {
     setGuests((g) => g.map((x, i) => (i === idx ? { ...x, ...patch } : x)));
@@ -93,8 +144,8 @@ function BookPage() {
   };
 
   const total = guests.reduce((sum, g) => {
-    const w = workshops.find((x) => x.id === g.workshop);
-    return sum + (w?.price ?? 0);
+    const item = getSelectedWorkshop(g.workshop);
+    return sum + (item?.price ?? 0);
   }, 0);
   const hasOnRequest = guests.some((g) => {
     const w = workshops.find((x) => x.id === g.workshop);
@@ -190,7 +241,7 @@ function BookPage() {
               alt="Workshop reserved card with resin pigments, dried flowers and a wooden cheeseboard"
               width={1536}
               height={1024}
-              className="relative rounded-3xl shadow-elevated w-full h-auto object-cover aspect-[3/2]"
+              className="relative rounded-3xl shadow-elevated w-full h-auto object-cover aspect-3/2"
             />
           </div>
         </div>
@@ -221,6 +272,7 @@ function BookPage() {
                   mode="single"
                   selected={date}
                   onSelect={setDate}
+                  
                   disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
                   initialFocus
                   className={cn("p-3 pointer-events-auto")}
@@ -360,7 +412,7 @@ function BookPage() {
 
         {/* SUMMARY */}
         <aside className="lg:col-span-2">
-          <div className="sticky top-28 rounded-3xl bg-gradient-teal text-primary-foreground p-8 shadow-elevated overflow-hidden relative">
+          <div className="sticky top-28 rounded-3xl bg-gradient-teal text-primary-foreground p-8 shadow-elevated overflow-hidden">
             <div className="absolute inset-0 bg-gradient-shine opacity-40" />
             <div className="relative">
               <div className="flex items-center gap-2 text-accent">

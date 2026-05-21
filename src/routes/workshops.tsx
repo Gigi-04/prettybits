@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, Clock, Users, AlertCircle } from "lucide-react";
 import workshopImg from "@/assets/workshop-pour.jpg";
+import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 
 export const Route = createFileRoute("/workshops")({
   head: () => ({
