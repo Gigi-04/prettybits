@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/popover";
 import { toast } from "sonner";
 import { useFirestoreCollection } from "@/hooks/useFirestoreCollection";
+import { createReservation, createPrivateBooking } from "@/lib/firestore-writes";
 import reservationImg from "@/assets/workshop-reservation.jpg";
 
 export const Route = createFileRoute("/book")({
@@ -152,7 +153,7 @@ function BookPage() {
     return w && w.price === 0;
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = bookingSchema.safeParse({
       date,
@@ -166,10 +167,49 @@ function BookPage() {
       toast.error(result.error.issues[0]?.message ?? "Please check the form");
       return;
     }
-    setSubmitted({ date: result.data.date, guests, contactName });
-    toast.success("Booking request received!", {
-      description: "We'll be in touch on WhatsApp shortly to confirm.",
-    });
+
+    const isPrivate = guests.some((g) => g.workshop === "private");
+
+    try {
+      if (isPrivate) {
+        await createPrivateBooking({
+          date: result.data.date,
+          guestCount: guests.length,
+          guests,
+          contactName,
+          email,
+          phone,
+          notes: notes || undefined,
+        });
+      } else {
+        const guestRecords = guests.map((g) => {
+          const w = workshops.find((x) => x.id === g.workshop);
+          return {
+            name: g.name,
+            workshopId: g.workshop,
+            workshopName: w?.name ?? "",
+            price: w?.price ?? 0,
+          };
+        });
+        await createReservation({
+          date: result.data.date,
+          guestCount: guests.length,
+          guests: guestRecords,
+          totalAmount: total,
+          contactName,
+          email,
+          phone,
+          notes: notes || undefined,
+        });
+      }
+      setSubmitted({ date: result.data.date, guests, contactName });
+      toast.success("Booking request received!", {
+        description: "We'll be in touch on WhatsApp shortly to confirm.",
+      });
+    } catch (err) {
+      console.error("Failed to save booking", err);
+      toast.error("Could not submit booking — please try again.");
+    }
   };
 
   if (submitted) {
