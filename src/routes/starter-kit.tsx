@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Check, Sparkles, Plus, Minus } from "lucide-react";
+import { Check, Sparkles, Package, Plus, Minus } from "lucide-react";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import starterKitImg from "@/assets/starter-kit.jpg";
