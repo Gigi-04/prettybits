@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Check, Sparkles, Package, Plus, Minus } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Check, Sparkles, Plus, Minus } from "lucide-react";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import starterKitImg from "@/assets/starter-kit.jpg";
@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { useFirestoreCollection } from "@/hooks/useFirestoreCollection";
+import type { StarterKit } from "@/lib/firestore-types";
 
 export const Route = createFileRoute("/starter-kit")({
   head: () => ({
@@ -22,12 +24,7 @@ export const Route = createFileRoute("/starter-kit")({
   component: StarterKitPage,
 });
 
-const items = [
-  { id: "coaster", label: "Coaster set (×2)", price: 450, desc: "Two round silicone moulds + base resin" },
-  { id: "tray", label: "Trinket tray", price: 550, desc: "One rectangular mould + base resin" },
-  { id: "keychain", label: "Keychain set", price: 350, desc: "Three small moulds + hardware" },
-  { id: "ornament", label: "Hanging ornament", price: 420, desc: "Festive shapes + hanging cord" },
-];
+const fallbackItems: Array<{ id: string; label: string; price: number; desc: string; inStock: boolean }> = [];
 
 const colours = [
   { id: "blush", label: "Blush", hex: "oklch(0.85 0.06 20)" },
@@ -66,7 +63,19 @@ const detailsSchema = z.object({
 });
 
 function StarterKitPage() {
-  const [item, setItem] = useState("coaster");
+  const { data: kits, loading: kitsLoading, error: kitsError } = useFirestoreCollection<StarterKit>("starterKits");
+
+  const items = kits.length > 0
+    ? kits.map((k) => ({
+        id: k.id,
+        label: k.name,
+        price: k.price ?? 0,
+        desc: k.description ?? "",
+        inStock: (k.stockStatus ?? "in_stock").toLowerCase() !== "out_of_stock",
+      }))
+    : fallbackItems;
+
+  const [item, setItem] = useState("");
   const [selectedColours, setSelectedColours] = useState<string[]>([]);
   const [glitter, setGlitter] = useState("none");
   const [qty, setQty] = useState(1);
@@ -76,6 +85,14 @@ function StarterKitPage() {
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
   const [submitted, setSubmitted] = useState(false);
+
+  // Auto-select first available item once kits load
+  useEffect(() => {
+    if (!item && items.length > 0) {
+      const firstInStock = items.find((i) => i.inStock) ?? items[0];
+      setItem(firstInStock.id);
+    }
+  }, [items, item]);
 
   const selectedItem = items.find((i) => i.id === item);
   const extraCount = Math.max(0, selectedColours.length - 2);
