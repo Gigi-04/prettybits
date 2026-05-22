@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useFirestoreCollection } from "@/hooks/useFirestoreCollection";
+import { createStarterKitOrder } from "@/lib/firestore-admin";
 import type { StarterKit } from "@/lib/firestore-types";
 
 export const Route = createFileRoute("/starter-kit")({
@@ -106,7 +107,7 @@ function StarterKitPage() {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedColours.length < 2) {
       toast.error("Please pick at least 2 colours");
@@ -117,10 +118,31 @@ function StarterKitPage() {
       toast.error(result.error.issues[0]?.message ?? "Please check the form");
       return;
     }
-    setSubmitted(true);
-    toast.success("Order received!", {
-      description: "We'll confirm via WhatsApp and arrange delivery.",
-    });
+    if (!selectedItem) {
+      toast.error("Please pick a kit");
+      return;
+    }
+    try {
+      await createStarterKitOrder({
+        itemId: selectedItem.id,
+        itemName: selectedItem.label,
+        colours: selectedColours,
+        glitter,
+        quantity: qty,
+        total,
+        name,
+        email,
+        phone,
+        address,
+        notes: notes || undefined,
+      });
+      setSubmitted(true);
+      toast.success("Order received!", {
+        description: "We'll confirm via WhatsApp and arrange delivery.",
+      });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to place order");
+    }
   };
 
   if (submitted) {
