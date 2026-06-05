@@ -38,7 +38,7 @@ export async function createWorkshopSession(data: {
   remainingSlots: number;
   availableItems: Array<{ name: string; price: number }>;
 }) {
-  return addDoc(collection(db, "workshopSessions"), {
+  return addDoc(collection(db, "workshops"), {
     date: Timestamp.fromDate(data.date),
     time: data.time ?? "",
     totalSlots: data.totalSlots,
@@ -64,7 +64,7 @@ export async function updateWorkshopSession(
   if (data.totalSlots !== undefined) payload.totalSlots = data.totalSlots;
   if (data.remainingSlots !== undefined) payload.remainingSlots = data.remainingSlots;
   if (data.availableItems) payload["available items"] = data.availableItems;
-  return updateDoc(doc(db, "workshopSessions", id), payload);
+  return updateDoc(doc(db, "workshop", id), payload);
 }
 
 export async function createStarterKitOrder(data: {

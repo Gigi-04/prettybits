@@ -5,7 +5,7 @@ export interface WorkshopItem {
   price: number;
 }
 
-export interface WorkshopSession {
+export interface Workshops {
   id: string;
   date: Timestamp | { toDate: () => Date } | string | Date;
   time?: string;

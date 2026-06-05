@@ -4,11 +4,11 @@ import { Instagram, Facebook, MessageCircle, Mail, Music2 } from "lucide-react";
 export function Footer() {
   return (
     <footer className="mt-24 border-t border-border/60 bg-secondary/40">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 grid gap-12 md:grid-cols-4">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 grid gap-12 md:grid-cols-5">
         <div className="md:col-span-2">
           <div className="flex items-baseline gap-1">
-            <span className="font-script text-4xl text-primary leading-none">Pretty</span>
-            <span className="font-script text-4xl text-foreground leading-none">Bits</span>
+            <span className="font-script text-4xl text-primary leading-none">PrettyBits</span>
+            {/* <span className="font-script text-4xl text-foreground leading-none">Bits</span> */}
           </div>
           <p className="mt-4 max-w-md text-sm text-muted-foreground leading-relaxed">
             Handcrafted resin art, functional decor and creative workshops.
@@ -56,7 +56,31 @@ export function Footer() {
             <li className="pt-2 text-foreground">+27 83 441 1311</li>
           </ul>
         </div>
+
+        <div>
+          <h4 className="text-sm font-semibold text-foreground tracking-wide uppercase">Hours</h4>
+          <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+            <li>
+              <span className="block text-xs font-semibold text-foreground uppercase tracking-wider">Mon - Fri</span>
+              <span>Open: 10:00 - 16:00</span>             
+            </li>
+            <li>
+              <span className="block text-xs font-semibold text-foreground uppercase tracking-wider">Friday</span>
+              <span>Closed: 12:00-14:00</span>
+            </li>
+            <li>
+              <span className="block text-xs font-semibold text-foreground uppercase tracking-wider">Sat - Sun</span>
+              <span>Workshop Days</span>
+            </li>
+           
+          </ul>
+        </div>
+
       </div>
+
+     
+
+      
 
       <div className="border-t border-border/60">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">

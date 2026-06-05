@@ -33,9 +33,9 @@ function ContactPage() {
         {[
           { Icon: MessageCircle, label: "WhatsApp", value: "+27 83 441 1311", href: "https://wa.me/27834411311" },
           { Icon: Phone, label: "Phone", value: "+27 83 441 1311", href: "tel:+27834411311" },
-          { Icon: Mail, label: "Email", value: "hello@prettybits.co.za", href: "mailto:hello@prettybits.co.za" },
-          { Icon: Instagram, label: "Instagram", value: "@prettybits", href: "https://instagram.com" },
-          { Icon: MapPin, label: "Studio", value: "Goodwood, Cape Town", href: "#" },
+          { Icon: Mail, label: "Email", value: "faatimah@prettybits.co.za", href: "mailto:faatimah@prettybits.co.za" },
+          { Icon: Instagram, label: "Instagram", value: "@prettybitsct", href: "https://instagram.com/prettybitsct" },
+          { Icon: MapPin, label: "Location", value: "Goodwood, Cape Town", href: "#" },
         ].map(({ Icon, label, value, href }) => (
           <a
             key={label}

@@ -18,8 +18,8 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-background/80 border-b border-border/60">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 h-20 flex items-center justify-between">
         <Link to="/" className="flex items-baseline gap-1 group">
-          <span className="font-script text-3xl text-primary leading-none">Pretty</span>
-          <span className="font-script text-3xl text-foreground leading-none">Bits</span>
+          <span className="font-script text-3xl text-primary leading-none">PrettyBits</span>
+          {/* <span className="font-script text-3xl text-foreground leading-none">Bits</span> */}
         </Link>
 
         <nav className="hidden md:flex items-center gap-10">

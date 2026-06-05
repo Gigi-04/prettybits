@@ -111,6 +111,17 @@ function BookPage() {
     }
   });
 
+  const nextSessionDate = availableSessions.length > 0
+  ? availableSessions.reduce((earliest, session) => {
+      const d = session.date && typeof session.date.toDate === "function"
+        ? session.date.toDate()
+        : new Date(session.date);
+      return d < earliest ? d : earliest;
+    }, availableSessions[0].date && typeof availableSessions[0].date.toDate === "function"
+      ? availableSessions[0].date.toDate()
+      : new Date(availableSessions[0].date))
+  : new Date();
+
   const currentSession = availableSessions.find((session) => {
     if (!date) return false;
     const parsedSessionDate = session.date && typeof session.date.toDate === 'function'
@@ -312,8 +323,16 @@ function BookPage() {
                   mode="single"
                   selected={date}
                   onSelect={setDate}
-                  
-                  disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                  defaultMonth={nextSessionDate}
+                  disabled={(d) => {
+                    const dateStr = format(d, "yyyy-MM-dd");
+                    return !availableSessions.some((session) => {
+                      const sessionDate = session.date && typeof session.date.toDate === "function"
+                        ? session.date.toDate()
+                        : new Date(session.date);
+                      return format(sessionDate, "yyyy-MM-dd") === dateStr;
+                    });
+                  }}
                   initialFocus
                   className={cn("p-3 pointer-events-auto")}
                 />
