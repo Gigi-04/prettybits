@@ -38,7 +38,7 @@ import {
 import { toast } from "sonner";
 import { useFirestoreCollection } from "@/hooks/useFirestoreCollection";
 import { createReservation, createPrivateBooking } from "@/lib/firestore-writes";
-import reservationImg from "@/assets/workshop-reservation.jpg";
+import reservationImg from "@/assets/Pouring Resin.jpg";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
