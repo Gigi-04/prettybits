@@ -38,7 +38,7 @@ import {
 import { toast } from "sonner";
 import { useFirestoreCollection } from "@/hooks/useFirestoreCollection";
 import { createReservation, createPrivateBooking } from "@/lib/firestore-writes";
-import reservationImg from "@/assets/Pouring Resin.jpg";
+import reservationImg from "@/assets/Pouring Resin.jpeg";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
@@ -277,7 +277,7 @@ function BookPage() {
       <section className="bg-gradient-hero">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 lg:py-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
-            <p className="font-script text-2xl text-primary">Book your spot</p>
+            <p className="font-script text-5xl text-primary">Book your spot</p>
             <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance">
               Reserve your workshop.
             </h1>
@@ -476,7 +476,7 @@ function BookPage() {
             <div className="relative">
               <div className="flex items-center gap-2 text-accent">
                 <Sparkles className="h-4 w-4" />
-                <span className="font-script text-xl">Your booking</span>
+                <span className="font-script text-4xl">Your booking</span>
               </div>
 
               <div className="mt-6 space-y-5 text-sm">

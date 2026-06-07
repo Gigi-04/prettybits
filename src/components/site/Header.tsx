@@ -18,7 +18,10 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-background/80 border-b border-border/60">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 h-20 flex items-center justify-between">
         <Link to="/" className="flex items-baseline gap-1 group">
-          <span className="font-script text-3xl text-primary leading-none">PrettyBits</span>
+          <span className="font-script text-5xl text-primary leading-none">PrettyBits</span>
+          <span className="hidden lg:inline-block ml-3 pl-3 border-l border-teal/40 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground self-center">
+            Resin&nbsp;Art&nbsp;·&nbsp;Workshops
+          </span>
           {/* <span className="font-script text-3xl text-foreground leading-none">Bits</span> */}
         </Link>
 

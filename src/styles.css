@@ -7,9 +7,10 @@
 /* PrettyBits — modern resin art brand
    Palette: deep teal, soft white, warm sand, gold accent */
 
+
 @theme inline {
   --font-display: "Playfair Display", "Cormorant Garamond", serif;
-  --font-script: "Dancing Script", cursive;
+  --font-script: "Moon Time", "Dancing Script", cursive;
   --font-sans: "Inter", system-ui, sans-serif;
 
   --radius-sm: calc(var(--radius) - 4px);
@@ -147,6 +148,13 @@
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.78 0.13 195);
+}
+
+@font-face {
+  font-family: 'Moon Time';
+  src: url('./assets/fonts/MoonTime Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @layer base {

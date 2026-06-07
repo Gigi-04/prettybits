@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles, Heart, Palette } from "lucide-react";
 import heroImg from "@/assets/hero-resin.jpg";
-import workshopImg from "@/assets/workshop-pour.jpg";
-import coastersImg from "@/assets/product-coasters.jpg";
-import cheeseboardImg from "@/assets/product-cheeseboard.jpg";
-import flowersImg from "@/assets/product-flowers.jpg";
-import riverTableImg from "@/assets/product-rivertable.jpg";
+import workshopImg from "@/assets/Pouring Resin 2.jpeg";
+import weddingFavoursImg from "@/assets/Wedding Favours 3.jpeg";
+import weddingRingTrayImg from "@/assets/Rectangle Ring Tray 3.jpeg";
+import flowersImg from "@/assets/Flower Hexagon 3.jpeg";
+import customImg from "@/assets/Custom Geode (birthday).jpeg";
+import starterKitImg from "@/assets/starter-kit.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,10 +23,10 @@ export const Route = createFileRoute("/")({
 });
 
 const products = [
-  { img: coastersImg, name: "Resin Coasters", blurb: "Hand-poured statement pieces in every colour story." },
-  { img: cheeseboardImg, name: "Cheeseboards", blurb: "Live-edge wood meets ocean-inspired resin." },
+  { img: weddingFavoursImg, name: "Wedding Favours", blurb: "Miniature hand-poured resin art, customized for your special day." },
+  { img: weddingRingTrayImg, name: "Wedding Ring Tray", blurb: "Elegant display trays for your finest pieces." },
   { img: flowersImg, name: "Flower Preservation", blurb: "Forever keepsakes from your most precious blooms." },
-  { img: riverTableImg, name: "River Tables", blurb: "Custom statement furniture, made just for you." },
+  { img: customImg, name: "Custom Pieces", blurb: "Unique creations, made just for you." },
 ];
 
 
@@ -45,7 +46,7 @@ function HomePage() {
             </span>
             <h1 className="mt-6 font-display text-5xl sm:text-6xl lg:text-7xl font-semibold leading-[1.05] text-foreground text-balance">
               Where resin meets{" "}
-              <span className="font-script font-normal text-primary">artistry</span>
+              <span className="font-script font-normal text-9xl text-primary">artistry</span>
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed">
               Beautifully unique, handcrafted resin pieces and beginner-friendly
@@ -105,7 +106,7 @@ function HomePage() {
       {/* ABOUT */}
       <section className="mx-auto max-w-7xl px-6 lg:px-10 py-24 lg:py-32 grid lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-5">
-          <p className="font-script text-2xl text-primary">About us</p>
+          <p className="font-script text-5xl text-primary">About us</p>
           <h2 className="mt-2 font-display text-4xl lg:text-5xl font-semibold text-balance">
             A creative South African studio.
           </h2>
@@ -149,7 +150,7 @@ function HomePage() {
       <section className="mx-auto max-w-7xl px-6 lg:px-10 py-24 lg:py-32">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
-            <p className="font-script text-2xl text-primary">Our craft</p>
+            <p className="font-script text-5xl text-primary">Our craft</p>
             <h2 className="mt-2 font-display text-4xl lg:text-5xl font-semibold text-balance max-w-xl">
               Pieces that turn moments into keepsakes.
             </h2>
@@ -187,7 +188,7 @@ function HomePage() {
         <div className="relative overflow-hidden rounded-3xl bg-gradient-teal text-primary-foreground p-8 sm:p-12 lg:p-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="absolute inset-0 bg-gradient-shine opacity-50" />
           <div className="relative">
-            <p className="font-script text-2xl text-accent">Hands-on. Beginner friendly.</p>
+            <p className="font-script text-5xl text-accent">Hands-on. Beginner friendly.</p>
             <h2 className="mt-3 font-display text-4xl lg:text-5xl font-semibold text-balance">
               Spend an afternoon making something beautiful.
             </h2>
@@ -215,6 +216,42 @@ function HomePage() {
             <img
               src={workshopImg}
               alt="Pouring teal resin into a wooden mould"
+              loading="lazy"
+              width={1280}
+              height={1280}
+              className="rounded-2xl shadow-elevated w-full aspect-square object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+       {/* Starter Kit CTA */}
+      <section className="mx-auto max-w-7xl px-6 lg:px-10 pb-24 lg:pb-32">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-teal text-primary-foreground p-8 sm:p-12 lg:p-20 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="absolute inset-0 bg-gradient-shine opacity-50" />
+          <div className="relative">
+            <p className="font-script text-5xl text-accent">Craft from home. No experience needed.</p>
+            <h2 className="mt-3 font-display text-4xl lg:text-5xl font-semibold text-balance">
+              Bring the workshop experience home with our starter kits.
+            </h2>
+            <p className="mt-5 text-base lg:text-lg text-primary-foreground/85 leading-relaxed max-w-md">
+              Choose your starter kit project — from simple coasters to a stunning cheeseboard.
+               Your kit comes fully loaded with all the essentials, making it effortless to create from the comfort of your kitchen table.
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <Link
+                to="/starter-kit"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-background text-primary px-8 py-4 text-base font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+              >
+                Order Your Kit <ArrowRight className="h-4 w-4" />
+              </Link>
+              
+            </div>
+          </div>
+          <div className="relative">
+            <img
+              src={starterKitImg}
+              alt="Starter kit with various resin crafting supplies"
               loading="lazy"
               width={1280}
               height={1280}

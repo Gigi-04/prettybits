@@ -167,7 +167,7 @@ function CustomPage() {
     <>
       <section className="bg-gradient-hero">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 lg:py-20 text-center">
-          <p className="font-script text-2xl text-primary">Made just for you</p>
+          <p className="font-script text-5xl text-primary">Made just for you</p>
           <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance">
             Commission a custom piece.
           </h1>

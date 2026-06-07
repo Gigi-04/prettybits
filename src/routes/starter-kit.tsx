@@ -171,7 +171,7 @@ function StarterKitPage() {
       <section className="bg-gradient-hero">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 lg:py-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
-            <p className="font-script text-2xl text-primary">Make at home</p>
+            <p className="font-script text-5xl text-primary">Make at home</p>
             <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance">
               Build your starter kit.
             </h1>
@@ -347,7 +347,7 @@ function StarterKitPage() {
             <div className="relative">
               <div className="flex items-center gap-2 text-accent">
                 <Sparkles className="h-4 w-4" />
-                <span className="font-script text-xl">Your kit</span>
+                <span className="font-script text-4xl">Your kit</span>
               </div>
 
               <div className="mt-6 space-y-5 text-sm">

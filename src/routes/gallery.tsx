@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import heroImg from "@/assets/hero-resin.jpg";
-import workshopImg from "@/assets/workshop-pour.jpg";
-import coastersImg from "@/assets/product-coasters.jpg";
-import cheeseboardImg from "@/assets/product-cheeseboard.jpg";
-import flowersImg from "@/assets/product-flowers.jpg";
-import riverTableImg from "@/assets/product-rivertable.jpg";
+import workshopImg from "@/assets/Pouring Resin 2.jpeg";
+import weddingFavoursImg from "@/assets/Wedding Favours 3.jpeg";
+import weddingRingTrayImg from "@/assets/Rectangle Ring Tray 3.jpeg";
+import flowersImg from "@/assets/Flower Hexagon 3.jpeg";
+import customImg from "@/assets/Custom Geode (birthday).jpeg";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -20,12 +20,12 @@ export const Route = createFileRoute("/gallery")({
 });
 
 const items = [
-  { img: coastersImg, label: "Geode Coasters", category: "Coasters" },
-  { img: cheeseboardImg, label: "Wave Cheeseboard", category: "Serveware" },
+  { img: weddingFavoursImg, label: "Wedding Favours", category: "Magnets" },
+  { img: weddingRingTrayImg, label: "Wedding Ring Tray", category: "Tray" },
   { img: heroImg, label: "Teal & Gold Set", category: "Coasters" },
-  { img: flowersImg, label: "Bridal Bouquet Cube", category: "Keepsakes" },
-  { img: riverTableImg, label: "Ocean River Table", category: "Furniture" },
-  { img: workshopImg, label: "Pour in Progress", category: "Studio" },
+  { img: flowersImg, label: "Bridal Bouquet Hexagon", category: "Keepsakes" },
+  { img: customImg, label: "Custom Geode", category: "Keepsakes" },
+  { img: workshopImg, label: "Pour in Progress", category: "Workshop" },
 ];
 
 function GalleryPage() {
@@ -33,7 +33,7 @@ function GalleryPage() {
     <>
       <section className="bg-gradient-hero">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 lg:py-24 text-center">
-          <p className="font-script text-2xl text-primary">Gallery</p>
+          <p className="font-script text-5xl text-primary">Gallery</p>
           <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance max-w-3xl mx-auto">
             A little look inside the studio.
           </h1>

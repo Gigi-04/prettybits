@@ -1,7 +1,12 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check, Clock, Users, AlertCircle } from "lucide-react";
+import { Check, Clock, Users, AlertCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import workshopImg from "@/assets/workshop-pour.jpg";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
+
+import carouselImg1 from "@/assets/Custom 1.jpeg";
+import carouselImg2 from "@/assets/Custom 2.jpeg";
+import carouselImg3 from "@/assets/Custom 3.jpeg";
 
 export const Route = createFileRoute("/workshops")({
   head: () => ({
@@ -34,13 +39,44 @@ const riverTableWorkshops = [
   { name: "Round Side Table 400mm Ø", price: 1890 },
 ];
 
+// Carousel images array
+const carouselImages = [
+  { 
+    src: carouselImg1, 
+    alt: "Resin Coasters Workshop", 
+    title: "Resin Coasters", 
+    description: "Create a set of beautiful, high-gloss customized coasters." 
+  },
+  { 
+    src: carouselImg2, 
+    alt: "Resin Cheeseboard Workshop", 
+    title: "Cheeseboard Workshop", 
+    description: "Learn to pour flawless ocean waves onto live-edge wood." 
+  },
+  { 
+    src: carouselImg3, 
+    alt: "Resin Tray and Decor", 
+    title: "Trinket Trays & Homeware", 
+    description: "Craft functional decor pieces perfect for any table or vanity." 
+  },
+];
+
 function WorkshopsPage() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev === carouselImages.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? carouselImages.length - 1 : prev - 1));
+  };
   return (
     <>
       {/* HERO */}
       <section className="bg-gradient-hero">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 lg:py-28 text-center">
-          <p className="font-script text-2xl text-primary">Workshops</p>
+          <p className="font-script text-5xl text-primary">Workshops</p>
           <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance max-w-3xl mx-auto">
             Learn the art of resin in a fun, supportive space.
           </h1>
@@ -80,25 +116,29 @@ function WorkshopsPage() {
         </div>
       </section>
 
-      {/* WORKSHOP OPTIONS */}
-      <section className="mx-auto max-w-7xl px-6 lg:px-10 pb-24">
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Standard */}
-          <div className="rounded-3xl bg-secondary/50 p-8 lg:p-10">
-            <p className="font-script text-xl text-primary">Workshop options</p>
-            <h2 className="mt-1 font-display text-3xl font-semibold">Pick your project</h2>
-            <p className="mt-3 text-sm text-muted-foreground">Per person, all materials included.</p>
+      {/* WORKSHOP OPTIONS SECTION */}
+      <section className="mx-auto max-w-7xl px-6 lg:px-10 pb-24 space-y-12">
+        
+        {/* UPPER GRID: Standard Workshops + Carousel */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+          {/* Standard Options */}
+          <div className="rounded-3xl bg-secondary/50 p-8 lg:p-10 flex flex-col justify-between">
+            <div>
+              <p className="font-script text-4xl text-primary">Workshop options</p>
+              <h2 className="mt-1 font-display text-3xl font-semibold">Pick your project</h2>
+              <p className="mt-3 text-sm text-muted-foreground">Per person, all materials included.</p>
 
-            <ul className="mt-8 divide-y divide-border">
-              {standardWorkshops.map((w) => (
-                <li key={w.name} className="flex items-center justify-between py-4">
-                  <span className="font-medium">{w.name}</span>
-                  <span className="font-display text-lg font-semibold text-primary">
-                    R{w.price}
-                  </span>
-                </li>
-              ))}
-            </ul>
+              <ul className="mt-8 divide-y divide-border">
+                {standardWorkshops.map((w) => (
+                  <li key={w.name} className="flex items-center justify-between py-4">
+                    <span className="font-medium">{w.name}</span>
+                    <span className="font-display text-lg font-semibold text-primary">
+                      R{w.price}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             <Link
               to="/book"
@@ -108,48 +148,113 @@ function WorkshopsPage() {
             </Link>
           </div>
 
-          {/* River Tables */}
-          <div className="rounded-3xl bg-gradient-teal text-primary-foreground p-8 lg:p-10 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-shine opacity-40" />
-            <div className="relative">
-              <p className="font-script text-xl text-accent">Premium</p>
-              <h2 className="mt-1 font-display text-3xl font-semibold">River table workshops</h2>
-              <p className="mt-3 text-sm text-primary-foreground/80">
-                Take home a true statement piece. Live-edge wood with a flowing resin river.
-              </p>
-
-              <ul className="mt-8 divide-y divide-primary-foreground/15">
-                {riverTableWorkshops.map((w) => (
-                  <li key={w.name} className="flex items-center justify-between py-4">
-                    <span className="font-medium">{w.name}</span>
-                    <span className="font-display text-lg font-semibold">R{w.price}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-8 rounded-2xl bg-primary-foreground/10 backdrop-blur p-5">
-                <p className="font-script text-xl text-accent">3 Day Resin Course</p>
-                <p className="mt-2 text-sm text-primary-foreground/85 leading-relaxed">
-                  Three days, three resin pieces, hands-on guidance and our hard-earned
-                  insights. Includes a beginner's guide, supplier list and the silicone
-                  moulds you use are yours to keep.
-                </p>
-              </div>
-
-              <Link
-                to="/book"
-                className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-background text-primary px-6 py-3.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+          {/* Image Carousel Card with Text Overlay */}
+          <div className="rounded-3xl bg-background border border-border overflow-hidden relative h-96 lg:h-auto flex items-center justify-center group shadow-soft">
+            {/* Carousel Images */}
+            {carouselImages.map((img, index) => (
+              <div
+                key={index}
+                className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+                }`}
               >
-                Enquire & book
-              </Link>
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className="w-full h-full object-cover object-center"
+                />
+                
+                {/* Visual Gradient Overlay (Darkened lower third for text contrast) */}
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
+
+                {/* Text Overlay */}
+                <div className="absolute inset-x-0 bottom-16 p-6 md:p-8 flex flex-col justify-end text-white pointer-events-none select-none z-20">
+                  <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-1 drop-shadow-md">
+                    {img.title}
+                  </h3>
+                  <p className="text-sm text-white/90 max-w-md drop-shadow-xs">
+                    {img.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+
+            {/* Navigation Controls */}
+            <button
+              type="button"
+              onClick={prevSlide}
+              aria-label="Previous image"
+              className="absolute left-4 z-20 p-2 rounded-full bg-background/80 backdrop-blur text-foreground shadow-sm hover:bg-background transition-colors opacity-0 group-hover:opacity-100 duration-300"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={nextSlide}
+              aria-label="Next image"
+              className="absolute right-4 z-20 p-2 rounded-full bg-background/80 backdrop-blur text-foreground shadow-sm hover:bg-background transition-colors opacity-0 group-hover:opacity-100 duration-300"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+
+            {/* Pagination Indicators */}
+            <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-20">
+              {carouselImages.map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => setCurrentSlide(index)}
+                  className={`h-2 transition-all rounded-full ${
+                    index === currentSlide ? "w-6 bg-white" : "w-2 bg-white/50"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Private */}
-        <div className="mt-12 rounded-3xl border border-border p-8 lg:p-12 grid md:grid-cols-3 gap-8 items-center">
+        {/* LOWER SECTION: River Tables (Premium) */}
+        <div className="rounded-3xl bg-gradient-teal text-primary-foreground p-8 lg:p-12 relative overflow-hidden shadow-soft">
+          <div className="absolute inset-0 bg-gradient-shine opacity-40" />
+          <div className="relative">
+            <p className="font-script text-4xl text-accent">Premium</p>
+            <h2 className="mt-1 font-display text-3xl font-semibold">River table workshops</h2>
+            <p className="mt-3 text-sm text-primary-foreground/80 max-w-2xl">
+              Take home a true statement piece. Live-edge wood pieces treated with a flowing, beautifully customized resin river.
+            </p>
+
+            <ul className="mt-8 divide-y divide-primary-foreground/15 max-w-4xl">
+              {riverTableWorkshops.map((w) => (
+                <li key={w.name} className="flex items-center justify-between py-4">
+                  <span className="font-medium">{w.name}</span>
+                  <span className="font-display text-lg font-semibold">R{w.price}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 rounded-2xl bg-primary-foreground/10 backdrop-blur p-6 lg:p-8 max-w-4xl">
+              <p className="font-script text-4xl text-accent">3 Day Resin Course</p>
+              <p className="mt-2 text-sm text-primary-foreground/85 leading-relaxed">
+                Three days, three resin pieces, hands-on guidance and our hard-earned
+                insights. Includes a beginner's guide, supplier list and the silicone
+                moulds you use are yours to keep.
+              </p>
+            </div>
+
+            <Link
+              to="/book"
+              className="mt-8 inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-background text-primary px-8 py-3.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+            >
+              Enquire & book
+            </Link>
+          </div>
+        </div>
+
+        {/* Private & Corporate Sessions */}
+        <div className="rounded-3xl border border-border p-8 lg:p-12 grid md:grid-cols-3 gap-8 items-center bg-background shadow-soft">
           <div className="md:col-span-2">
-            <p className="font-script text-xl text-primary">Private & corporate</p>
+            <p className="font-script text-4xl text-primary">Private & corporate</p>
             <h3 className="mt-1 font-display text-3xl font-semibold">Team buildings & private workshops</h3>
             <p className="mt-3 text-muted-foreground leading-relaxed">
               Birthdays, hen parties, team-building events or just a fun day with
@@ -157,13 +262,16 @@ function WorkshopsPage() {
               Choose from trinket trays, coasters, cheeseboards, side tables and more.
             </p>
           </div>
-          <Link
-            to="/book"
-            className="inline-flex items-center justify-center rounded-full border border-primary text-primary px-6 py-3.5 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
-          >
-            Plan a private session
-          </Link>
+          <div className="flex md:justify-end w-full">
+            <Link
+              to="/book"
+              className="inline-flex w-full md:w-auto items-center justify-center rounded-full border border-primary text-primary px-8 py-3.5 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
+            >
+              Plan a private session
+            </Link>
+          </div>
         </div>
+
       </section>
     </>
   );
