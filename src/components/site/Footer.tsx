@@ -40,9 +40,9 @@ export function Footer() {
           <h4 className="text-sm font-semibold text-foreground tracking-wide uppercase">Explore</h4>
           <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
             <li><Link to="/" className="hover:text-primary">Home</Link></li>
-            <li><Link to="/workshops" className="hover:text-primary">Workshops</Link></li>
+            {/* <li><Link to="/workshops" className="hover:text-primary">Workshops</Link></li> */}
             <li><Link to="/gallery" className="hover:text-primary">Gallery</Link></li>
-            <li><Link to="/book" className="hover:text-primary">Book Now</Link></li>
+            {/* <li><Link to="/book" className="hover:text-primary">Book Now</Link></li> */}
             <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
           </ul>
         </div>

@@ -54,10 +54,10 @@ function HomePage() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <Link
-                to="/book"
+                to="/contact"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-teal text-primary-foreground px-8 py-4 text-base font-medium shadow-soft hover:shadow-elevated transition-all hover:-translate-y-0.5"
               >
-                Book a Workshop
+                Contact Us
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
@@ -184,7 +184,7 @@ function HomePage() {
       </section>
 
       {/* WORKSHOP CTA */}
-      <section className="mx-auto max-w-7xl px-6 lg:px-10 pb-24 lg:pb-32">
+      {/* <section className="mx-auto max-w-7xl px-6 lg:px-10 pb-24 lg:pb-32">
         <div className="relative overflow-hidden rounded-3xl bg-gradient-teal text-primary-foreground p-8 sm:p-12 lg:p-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="absolute inset-0 bg-gradient-shine opacity-50" />
           <div className="relative">
@@ -223,9 +223,9 @@ function HomePage() {
             />
           </div>
         </div>
-      </section>
+      </section> */}
 
-       {/* Starter Kit CTA */}
+       {/* Starter Kit CTA
       <section className="mx-auto max-w-7xl px-6 lg:px-10 pb-24 lg:pb-32">
         <div className="relative overflow-hidden rounded-3xl bg-gradient-teal text-primary-foreground p-8 sm:p-12 lg:p-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="absolute inset-0 bg-gradient-shine opacity-50" />
@@ -259,7 +259,7 @@ function HomePage() {
             />
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }

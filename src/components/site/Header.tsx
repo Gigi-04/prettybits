@@ -25,7 +25,7 @@ export function Header() {
           {/* <span className="font-script text-3xl text-foreground leading-none">Bits</span> */}
         </Link>
 
-        <nav className="hidden md:flex items-center gap-10">
+        <nav className="hidden md:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
           {navLinks.map((link) => (
             <Link
               key={link.to}
@@ -39,14 +39,14 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        {/* <div className="hidden md:block">
           <Link
             to="/book"
             className="inline-flex items-center justify-center rounded-full bg-gradient-teal text-primary-foreground px-6 py-2.5 text-sm font-medium shadow-soft hover:shadow-elevated transition-all hover:-translate-y-0.5"
           >
             Book a Workshop
           </Link>
-        </div>
+        </div> */}
 
         <button
           className="md:hidden p-2 text-foreground"
