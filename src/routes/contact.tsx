@@ -16,7 +16,7 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [fields, setFields] = useState({ name: "", email: "", enquiry_type: "", message: "" });
+  const [fields, setFields] = useState({ name: "", email: "", phone: "", enquiry_type: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   function validate() {
@@ -24,6 +24,7 @@ function ContactPage() {
     if (!fields.name.trim()) e.name = "Please enter your name.";
     if (!fields.email.trim()) e.email = "Please enter your email address.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) e.email = "Please enter a valid email address.";
+    if (!fields.phone.trim()) e.phone = "Please enter your phone number.";
     if (!fields.enquiry_type) e.enquiry_type = "Please select an enquiry type.";
     if (!fields.message.trim()) e.message = "Please enter a message.";
     return e;
@@ -50,7 +51,7 @@ function ContactPage() {
 
       if (res.ok) {
         setStatus("success");
-        setFields({ name: "", email: "", enquiry_type: "", message: "" });
+        setFields({ name: "", email: "", phone: "", enquiry_type: "", message: "" });
       } else {
         setStatus("error");
       }
@@ -121,6 +122,21 @@ function ContactPage() {
                       className={`rounded-xl border px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary bg-background ${errors.name ? "border-red-400" : "border-border"}`}
                     />
                     {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
+                  </div>
+                  {/* Phone */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium">
+                      Phone <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={fields.phone}
+                      onChange={e => setFields(f => ({ ...f, phone: e.target.value }))}
+                      placeholder="+27 83 441 1311"
+                      className={`rounded-xl border px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary bg-background ${errors.phone ? "border-red-400" : "border-border"}`}
+                    />
+                    {errors.phone && <p className="text-xs text-red-500">{errors.phone}</p>}
                   </div>
 
                   {/* Email */}
