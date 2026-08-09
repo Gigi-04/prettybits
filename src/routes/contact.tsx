@@ -103,7 +103,7 @@ function ContactPage() {
               </p>
 
               <form onSubmit={handleSubmit} noValidate className="mt-8 flex flex-col gap-5">
-                <input type="hidden" name="access_key" value="332344e9-3efb-48b7-93c5-bf1396959947" />
+                <input type="hidden" name="access_key" value={import.meta.env.VITE_WEB3FORMS_KEY} />
                 <input type="hidden" name="subject" value="New enquiry from PrettyBits website" />
                 <input type="checkbox" name="botcheck" className="hidden" />
 
