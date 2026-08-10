@@ -71,13 +71,13 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
+            {/* <Link
               to="/book"
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center justify-center rounded-full bg-gradient-teal text-primary-foreground px-6 py-3 text-sm font-medium"
             >
               Book a Workshop
-            </Link>
+            </Link> */}
           </div>
         </div>
       )}
