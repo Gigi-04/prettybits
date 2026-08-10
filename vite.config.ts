@@ -12,8 +12,9 @@ export default defineConfig({
     tailwindcss(),
     tsconfigPaths(),
     sitemap({
-      hostname: "https://prettybits.co.za",
-      dynamicRoutes: ["/", "/gallery", "/contact"],
-    }),
+  hostname: "https://prettybits.co.za",
+  generateRobotsTxt: true,
+  dynamicRoutes: ["/gallery", "/contact"],
+}),
   ],
 });
