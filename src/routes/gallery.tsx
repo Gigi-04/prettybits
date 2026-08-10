@@ -22,7 +22,7 @@ export const Route = createFileRoute("/gallery")({
 const items = [
   { img: weddingFavoursImg, label: "Wedding Favours", category: "Magnets" },
   { img: weddingRingTrayImg, label: "Wedding Ring Tray", category: "Tray" },
-  { img: heroImg, label: "Teal & Gold Set", category: "Coasters" },
+  // { img: heroImg, label: "Teal & Gold Set", category: "Coasters" },
   { img: flowersImg, label: "Bridal Bouquet Hexagon", category: "Keepsakes" },
   { img: customImg, label: "Custom Geode", category: "Keepsakes" },
   { img: workshopImg, label: "Pour in Progress", category: "Workshop" },

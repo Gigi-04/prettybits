@@ -75,7 +75,7 @@ function HomePage() {
               </div>
               <div className="h-10 w-px bg-border" />
               <div>
-                <p className="font-display text-3xl font-semibold text-primary">4+</p>
+                <p className="font-display text-3xl font-semibold text-primary">5+</p>
                 <p className="text-muted-foreground">Years of craft</p>
               </div>
               <div className="h-10 w-px bg-border" />
