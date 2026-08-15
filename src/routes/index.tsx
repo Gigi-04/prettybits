@@ -5,7 +5,7 @@ import workshopImg from "@/assets/Pouring Resin 2.jpeg";
 import weddingFavoursImg from "@/assets/Wedding Favours 3.jpeg";
 import weddingRingTrayImg from "@/assets/Rectangle Ring Tray 3.jpeg";
 import flowersImg from "@/assets/Flower Hexagon 3.jpeg";
-import customImg from "@/assets/Custom Geode (birthday).jpeg";
+import customImg from "@/assets/Rock.jpeg";
 import starterKitImg from "@/assets/starter-kit.jpg";
 
 export const Route = createFileRoute("/")({
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
 const products = [
   { img: weddingFavoursImg, name: "Wedding Favours", blurb: "Miniature hand-poured resin art, customized for your special day." },
   { img: weddingRingTrayImg, name: "Wedding Ring Tray", blurb: "Elegant display trays for your finest pieces." },
-  { img: flowersImg, name: "Flower Preservation", blurb: "Forever keepsakes from your most precious blooms." },
+  { img: flowersImg, name: "Flower Preservations/Keepsakes", blurb: "Forever keepsakes from your most precious blooms." },
   { img: customImg, name: "Custom Pieces", blurb: "Unique creations, made just for you." },
 ];
 
@@ -50,21 +50,21 @@ function HomePage() {
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed">
               Beautifully unique, handcrafted resin pieces and beginner-friendly
-              workshops — because creativity should be an experience, not just a product.
+              workshops.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <Link
-                to="/contact"
+                to="/workshops"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-teal text-primary-foreground px-8 py-4 text-base font-medium shadow-soft hover:shadow-elevated transition-all hover:-translate-y-0.5"
               >
-                Contact Us
+                View Workshops
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                to="/gallery"
+                to="/products"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-background/80 backdrop-blur text-foreground px-8 py-4 text-base font-medium hover:border-primary hover:text-primary transition-colors"
               >
-                Explore the Gallery
+                Explore our Products
               </Link>
             </div>
 
@@ -106,17 +106,14 @@ function HomePage() {
       {/* ABOUT */}
       <section className="mx-auto max-w-7xl px-6 lg:px-10 py-24 lg:py-32 grid lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-5">
-          <p className="font-script text-5xl text-primary">About us</p>
-          <h2 className="mt-2 font-display text-4xl lg:text-5xl font-semibold text-balance">
-            A creative South African studio.
-          </h2>
+          <p className="font-script text-9xl text-primary">About us</p>
+          
         </div>
         <div className="lg:col-span-7 space-y-5 text-base text-muted-foreground leading-relaxed">
           <p>
             We are a South African, home-based creative business specialising in
             handcrafted resin art and functional decor. Our journey began in 2021
-            with a passion for creating unique, high-quality resin pieces that
-            combine artistic expression with everyday practicality.
+            with a passion for creating unique, high-quality resin pieces.
           </p>
           <p>
             Each product is carefully designed and handmade, ensuring no two
@@ -127,39 +124,22 @@ function HomePage() {
         </div>
       </section>
 
-      {/* VALUE PROPS */}
-      <section className="bg-secondary/40">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 grid md:grid-cols-3 gap-8">
-          {[
-            { Icon: Palette, title: "One-of-a-kind", text: "Every piece is hand-poured. The colours, the swirl, the moment — never repeated." },
-            { Icon: Heart, title: "Made with love", text: "Quality materials, careful craftsmanship and a generous splash of South African heart." },
-            { Icon: Sparkles, title: "Workshop-ready", text: "All materials provided. No experience needed. Just bring your creative energy." },
-          ].map(({ Icon, title, text }) => (
-            <div key={title} className="bg-background rounded-2xl p-8 shadow-soft">
-              <div className="h-12 w-12 rounded-xl bg-gradient-teal flex items-center justify-center text-primary-foreground">
-                <Icon className="h-5 w-5" />
-              </div>
-              <h3 className="mt-5 font-display text-2xl font-semibold">{title}</h3>
-              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      
 
       {/* PRODUCTS */}
       <section className="mx-auto max-w-7xl px-6 lg:px-10 py-24 lg:py-32">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
-            <p className="font-script text-5xl text-primary">Our craft</p>
+            <p className="font-script text-8xl text-primary">Our craft</p>
             <h2 className="mt-2 font-display text-4xl lg:text-5xl font-semibold text-balance max-w-xl">
-              Pieces that turn moments into keepsakes.
+              Custom resin creations.
             </h2>
           </div>
           <Link
-            to="/gallery"
+            to="/products"
             className="inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all"
           >
-            See the full gallery <ArrowRight className="h-4 w-4" />
+            See our products <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 

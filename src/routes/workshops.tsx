@@ -1,90 +1,182 @@
 import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check, Clock, Users, AlertCircle, ChevronLeft, ChevronRight } from "lucide-react";
-import workshopImg from "@/assets/workshop-pour.jpg";
+import { createFileRoute } from "@tanstack/react-router";
+import {
+  Check,
+  Clock,
+  Users,
+  AlertCircle,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  MessageCircle,
+  Image as ImageIcon,
+} from "lucide-react";
+import workshopImg from "@/assets/workshopHero.jpeg";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
+import { Modal } from "@/components/Modal";
+import { BookingForm, type WorkshopDate } from "@/components/BookingForm";
 
-import carouselImg1 from "@/assets/Custom 1.jpeg";
-import carouselImg2 from "@/assets/Custom 2.jpeg";
-import carouselImg3 from "@/assets/Custom 3.jpeg";
+import coasterbmimage from "@/assets/coaster and bookmark1.jpeg";
+import ttandcoasterimage from "@/assets/finished workshop coasters.jpeg";
+import roundcimage from "@/assets/round coasters1.jpeg";
+import resinoncimage from "@/assets/Resin on Canvas1.jpeg";
+import cheeseboardimage from "@/assets/Finished Cheeseboards.jpeg";
+import resintableimage from "@/assets/Resin Table1.jpeg";
+import cakestandimage from "@/assets/finished Cake stand.jpeg";
+import trayimage from "@/assets/Tray.jpeg";
+import rivetableimage1 from "@/assets/River Table 1.1.jpeg";
+import rivetableimage2 from "@/assets/River Table7.jpeg";
+import rivetableimage3 from "@/assets/River Table 6.jpeg";
+import sideTableimage from "@/assets/SideTable40.jpeg";
 
 export const Route = createFileRoute("/workshops")({
   head: () => ({
     meta: [
       { title: "Resin Workshops — PrettyBits Cape Town" },
-      { name: "description", content: "Beginner-friendly resin art workshops in Cape Town. Coasters, cheeseboards, river tables, 3-day intensives and private sessions." },
+      {
+        name: "description",
+        content:
+          "Beginner-friendly resin art workshops in Cape Town. Coasters, cheeseboards, river tables and private sessions.",
+      },
       { property: "og:title", content: "Resin Workshops — PrettyBits" },
-      { property: "og:description", content: "Hands-on, beginner-friendly resin workshops. All materials provided." },
+      {
+        property: "og:description",
+        content: "Hands-on, beginner-friendly resin workshops. All materials provided.",
+      },
       { property: "og:image", content: workshopImg },
     ],
   }),
   component: WorkshopsPage,
 });
 
+const WHATSAPP_NUMBER = "27834411311";
+
+const waLink = (message: string) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
 const standardWorkshops = [
-  { name: "Coaster & Bookmark", price: 290 },
-  { name: "Trinket Tray & Coaster (Cement)", price: 390 },
-  { name: "Resin Coasters ×2", price: 490 },
-  { name: "Resin on Canvas", price: 590 },
-  { name: "Cheeseboard", price: 690 },
-  { name: "Side Table 30cm", price: 690 },
-  { name: "Tray", price: 790 },
-  { name: "Cake Stand", price: 790 },
-  { name: "Side Table 40cm", price: 790 },
+  { name: "Coaster & Bookmark", price: 290, image: coasterbmimage },
+  { name: "Trinket Tray & Coaster (Cement)", price: 390, image: ttandcoasterimage },
+  { name: "Resin Coasters ×2", price: 490, image: roundcimage },
+  { name: "Resin on Canvas", price: 590, image: resinoncimage },
+  { name: "Cheeseboard", price: 690, image: cheeseboardimage },
+  { name: "Side Table 30cm", price: 690, image: resintableimage },
+  { name: "Tray", price: 790, image: trayimage },
+  { name: "Cake Stand", price: 790, image: cakestandimage },
+  { name: "Side Table 40cm", price: 790, image: sideTableimage },
 ];
 
 const riverTableWorkshops = [
-  { name: "Serving Board 600 × 400mm", price: 3390 },
-  { name: "Serving Board 400 × 300mm", price: 1990 },
-  { name: "Round Side Table 400mm Ø", price: 1890 },
+  { name: "Serving Board 600 × 400mm", price: 3490, image: rivetableimage1 },
+  { name: "Serving Board 400 × 300mm", price: 2290, image: rivetableimage2 },
+  { name: "Round Side Table 400mm diameter", price: 2290, image: rivetableimage3 },
 ];
 
-// Carousel images array
-const carouselImages = [
-  { 
-    src: carouselImg1, 
-    alt: "Resin Coasters Workshop", 
-    title: "Resin Coasters", 
-    description: "Create a set of beautiful, high-gloss customized coasters." 
-  },
-  { 
-    src: carouselImg2, 
-    alt: "Resin Cheeseboard Workshop", 
-    title: "Cheeseboard Workshop", 
-    description: "Learn to pour flawless ocean waves onto live-edge wood." 
-  },
-  { 
-    src: carouselImg3, 
-    alt: "Resin Tray and Decor", 
-    title: "Trinket Trays & Homeware", 
-    description: "Craft functional decor pieces perfect for any table or vanity." 
-  },
+const standardDates: WorkshopDate[] = [
+  { date: "Sunday, 23 August", time: "2:00 PM", full: false },
+  { date: "Saturday, 29 August", time: "11:00 AM", full: false },
+  { date: "Saturday, 5 September", time: "11:00 AM", full: false },
+  { date: "Sunday, 13 September", time: "2:00 PM", full: false },
+  { date: "Saturday, 26 September", time: "2:00 PM", full: false },
+  { date: "Sunday, 27 September", time: "11:00 AM", full: false },
+  { date: "Sunday, 11 October", time: "2:00 PM", full: false },
+  { date: "Saturday, 24 October", time: "2:00 PM", full: false },
+  { date: "Sunday, 25 October", time: "11:00 AM", full: false },
+  { date: "Saturday, 31 October", time: "11:00 AM", full: false },
+  { date: "Saturday, 7 November", time: "11:00 AM", full: false },
+  { date: "Sunday, 15 November", time: "2:00 PM", full: false },
+  { date: "Saturday, 28 November", time: "2:00 PM", full: false },
+  { date: "Sunday, 29 November", time: "11:00 AM", full: false },
+  { date: "Saturday, 5 December", time: "11:00 AM", full: false },
+  { date: "Saturday, 19 December", time: "2:00 PM", full: false },
+  { date: "Sunday, 20 December", time: "11:00 AM", full: false },
+  { date: "Sunday, 27 December", time: "2:00 PM", full: false },
 ];
+
+const riverTableDates: WorkshopDate[] = [
+  { date: "Sunday, 8 November", time: "2:00 PM", full: false },
+];
+
+function WorkshopOptionCard({
+  name,
+  price,
+  image,
+}: {
+  name: string;
+  price: number;
+  image: string | null;
+}) {
+  return (
+    <div className="rounded-2xl border border-border overflow-hidden bg-background shadow-soft flex flex-col">
+      <div className="relative aspect-square bg-secondary/60">
+        {image ? (
+          <img
+            src={image}
+            alt={name}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <ImageIcon className="h-8 w-8 text-muted-foreground/40" />
+          </div>
+        )}
+      </div>
+      <div className="p-4 flex items-center justify-between gap-2">
+        <span className="font-medium text-sm leading-snug">{name}</span>
+        <span className="font-display text-base font-semibold text-primary whitespace-nowrap">
+          R{price}pp
+        </span>
+      </div>
+    </div>
+  );
+}
 
 function WorkshopsPage() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [bookingModal, setBookingModal] = useState<"standard" | "river" | null>(
+    null
+  );
+  const [showAllDates, setShowAllDates] = useState(false);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === carouselImages.length - 1 ? 0 : prev + 1));
-  };
+  const DATES_PREVIEW_COUNT = 8;
+  const visibleDates = showAllDates
+    ? standardDates
+    : standardDates.slice(0, DATES_PREVIEW_COUNT);
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? carouselImages.length - 1 : prev - 1));
-  };
   return (
     <>
       {/* HERO */}
       <section className="bg-gradient-hero">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 lg:py-28 text-center">
-          <p className="font-script text-5xl text-primary">Workshops</p>
-          <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance max-w-3xl mx-auto">
-            Learn the art of resin in a fun, supportive space.
-          </h1>
-          <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Beginner friendly, no prior experience needed. All materials are
-            provided — just bring yourself and your creative energy. Workshops
-            run on weekends at our studio in Goodwood, Cape Town.
-          </p>
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 lg:py-28 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left">
+            <p className="font-script text-7xl text-primary">Workshops</p>
+            <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance">
+              Learn the art of resin in a fun, creative space.
+            </h1>
+            <p className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0">
+              Beginner friendly, no prior experience needed. All materials are
+              provided, just bring yourself and your creative energy. Workshops
+              run on weekends in Goodwood, Cape Town.
+            </p>
+
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+              <button
+                type="button"
+                onClick={() => setBookingModal("standard")}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-teal text-primary-foreground px-6 py-3.5 text-sm font-medium shadow-soft hover:shadow-elevated transition-all"
+              >
+                <MessageCircle className="h-4 w-4" />
+                Book a workshop
+              </button>
+            </div>
+          </div>
+
+          <div className="rounded-3xl overflow-hidden shadow-elevated aspect-4/3 lg:aspect-square">
+            <img
+              src={workshopImg}
+              alt="Resin being poured during a PrettyBits workshop"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
       </section>
 
@@ -92,9 +184,21 @@ function WorkshopsPage() {
       <section className="mx-auto max-w-7xl px-6 lg:px-10 py-20">
         <div className="grid md:grid-cols-3 gap-8">
           {[
-            { Icon: Clock, title: "About 2 hours", text: "Most weekend workshops run for around two hours from start to finish." },
-            { Icon: Check, title: "All materials included", text: "Resin, pigments, moulds and protective equipment — all provided." },
-            { Icon: Users, title: "Small groups", text: "Intimate, supportive setting where everyone gets one-on-one guidance." },
+            {
+              Icon: Clock,
+              title: "About 2 hours",
+              text: "Most weekend workshops run for around two hours from start to finish.",
+            },
+            {
+              Icon: Check,
+              title: "All materials included",
+              text: "Resin, pigments, moulds and protective equipment — all provided.",
+            },
+            {
+              Icon: Users,
+              title: "Beginner friendly",
+              text: "No experience required — small, supportive groups with one-on-one guidance.",
+            },
           ].map(({ Icon, title, text }) => (
             <div key={title} className="rounded-2xl border border-border p-8 bg-background">
               <div className="h-12 w-12 rounded-xl bg-secondary flex items-center justify-center text-primary">
@@ -110,169 +214,240 @@ function WorkshopsPage() {
           <AlertCircle className="h-5 w-5 text-accent-foreground/80 shrink-0 mt-0.5" />
           <p className="text-foreground/80">
             <strong className="font-semibold">Please note:</strong> Cured items
-            can be collected the following week. Resin can be harmful during
-            pregnancy — please reach out if you'd like more info.
+            can be collected 1–2 weeks after your workshop date. Resin can be
+            harmful to pregnant women. Not suitable for kids under 13 years without adult supervision.
           </p>
         </div>
       </section>
 
+      {/* UPCOMING DATES */}
+      <section className="mx-auto max-w-7xl px-6 lg:px-10 pb-20">
+        <p className="font-script text-6xl text-primary">When</p>
+        <h2 className="mt-1 font-display text-3xl font-semibold">Upcoming workshop dates</h2>
+
+        {standardDates.length > 0 ? (
+          <>
+            <div className="mt-8 flex flex-wrap gap-2.5">
+              {visibleDates.map((d, i) => (
+                <div
+                  key={`${d.date}-${d.time ?? ""}-${i}`}
+                  className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm ${
+                    d.full
+                      ? "border-border bg-secondary/40 text-muted-foreground line-through opacity-70"
+                      : "border-border bg-background"
+                  }`}
+                >
+                  <span className="font-medium">
+                    {d.date}
+                    {d.time ? `, ${d.time}` : ""}
+                  </span>
+                  {d.note && !d.full && (
+                    <span className="text-muted-foreground">· {d.note}</span>
+                  )}
+                  {d.full && (
+                    <span className="text-xs font-medium text-red-600 no-underline">
+                      Full
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {standardDates.length > DATES_PREVIEW_COUNT && (
+              <button
+                type="button"
+                onClick={() => setShowAllDates((v) => !v)}
+                className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+              >
+                {showAllDates
+                  ? "Show fewer dates"
+                  : `Show all ${standardDates.length} dates`}
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform ${
+                    showAllDates ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+            )}
+          </>
+        ) : (
+          <div className="mt-8 rounded-2xl border border-border p-8 bg-secondary/40 text-center">
+            <p className="text-muted-foreground">
+              New dates are added regularly — message us on WhatsApp for the
+              current schedule and availability.
+            </p>
+            <a
+              href={waLink("Hi! Could you tell me about upcoming workshop dates?")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-teal text-primary-foreground px-6 py-3 text-sm font-medium shadow-soft hover:shadow-elevated transition-all"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Ask about dates
+            </a>
+          </div>
+        )}
+      </section>
+
       {/* WORKSHOP OPTIONS SECTION */}
       <section className="mx-auto max-w-7xl px-6 lg:px-10 pb-24 space-y-12">
-        
-        {/* UPPER GRID: Standard Workshops + Carousel */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-          {/* Standard Options */}
-          <div className="rounded-3xl bg-secondary/50 p-8 lg:p-10 flex flex-col justify-between">
-            <div>
-              <p className="font-script text-4xl text-primary">Workshop options</p>
-              <h2 className="mt-1 font-display text-3xl font-semibold">Pick your project</h2>
-              <p className="mt-3 text-sm text-muted-foreground">Per person, all materials included.</p>
+        {/* 1. REGULAR WORKSHOPS */}
+        <div id="regular-workshops">
+          <p className="font-script text-6xl text-primary">Workshop options</p>
+          <h2 className="mt-1 font-display text-3xl font-semibold">Pick your project</h2>
+          <p className="mt-3 text-sm text-muted-foreground">Per person, all materials included.</p>
 
-              <ul className="mt-8 divide-y divide-border">
-                {standardWorkshops.map((w) => (
-                  <li key={w.name} className="flex items-center justify-between py-4">
-                    <span className="font-medium">{w.name}</span>
-                    <span className="font-display text-lg font-semibold text-primary">
-                      R{w.price}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <Link
-              to="/book"
-              className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-gradient-teal text-primary-foreground px-6 py-3.5 text-sm font-medium shadow-soft hover:shadow-elevated transition-all"
-            >
-              Book a workshop
-            </Link>
-          </div>
-
-          {/* Image Carousel Card with Text Overlay */}
-          <div className="rounded-3xl bg-background border border-border overflow-hidden relative h-96 lg:h-auto flex items-center justify-center group shadow-soft">
-            {/* Carousel Images */}
-            {carouselImages.map((img, index) => (
-              <div
-                key={index}
-                className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-                }`}
-              >
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  className="w-full h-full object-cover object-center"
-                />
-                
-                {/* Visual Gradient Overlay (Darkened lower third for text contrast) */}
-                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
-
-                {/* Text Overlay */}
-                <div className="absolute inset-x-0 bottom-16 p-6 md:p-8 flex flex-col justify-end text-white pointer-events-none select-none z-20">
-                  <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-1 drop-shadow-md">
-                    {img.title}
-                  </h3>
-                  <p className="text-sm text-white/90 max-w-md drop-shadow-xs">
-                    {img.description}
-                  </p>
-                </div>
-              </div>
+          <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {standardWorkshops.map((w) => (
+              <WorkshopOptionCard key={w.name} {...w} />
             ))}
-
-            {/* Navigation Controls */}
-            <button
-              type="button"
-              onClick={prevSlide}
-              aria-label="Previous image"
-              className="absolute left-4 z-20 p-2 rounded-full bg-background/80 backdrop-blur text-foreground shadow-sm hover:bg-background transition-colors opacity-0 group-hover:opacity-100 duration-300"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              onClick={nextSlide}
-              aria-label="Next image"
-              className="absolute right-4 z-20 p-2 rounded-full bg-background/80 backdrop-blur text-foreground shadow-sm hover:bg-background transition-colors opacity-0 group-hover:opacity-100 duration-300"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-
-            {/* Pagination Indicators */}
-            <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-20">
-              {carouselImages.map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => setCurrentSlide(index)}
-                  className={`h-2 transition-all rounded-full ${
-                    index === currentSlide ? "w-6 bg-white" : "w-2 bg-white/50"
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
           </div>
+
+          <button
+            type="button"
+            onClick={() => setBookingModal("standard")}
+            className="mt-8 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-teal text-primary-foreground px-6 py-3.5 text-sm font-medium shadow-soft hover:shadow-elevated transition-all"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Book a workshop
+          </button>
         </div>
 
-        {/* LOWER SECTION: River Tables (Premium) */}
-        <div className="rounded-3xl bg-gradient-teal text-primary-foreground p-8 lg:p-12 relative overflow-hidden shadow-soft">
+        {/* 2. RIVER TABLES (PREMIUM) */}
+        <div id="river-table-workshops" className="rounded-3xl bg-gradient-teal text-primary-foreground p-8 lg:p-12 relative overflow-hidden shadow-soft">
           <div className="absolute inset-0 bg-gradient-shine opacity-40" />
           <div className="relative">
-            <p className="font-script text-4xl text-accent">Premium</p>
+            <p className="font-script text-6xl text-accent">Premium</p>
             <h2 className="mt-1 font-display text-3xl font-semibold">River table workshops</h2>
             <p className="mt-3 text-sm text-primary-foreground/80 max-w-2xl">
-              Take home a true statement piece. Live-edge wood pieces treated with a flowing, beautifully customized resin river.
+              Made with wild olive.
             </p>
 
-            <ul className="mt-8 divide-y divide-primary-foreground/15 max-w-4xl">
+            <div className="mt-8 grid sm:grid-cols-3 gap-4 max-w-4xl">
               {riverTableWorkshops.map((w) => (
-                <li key={w.name} className="flex items-center justify-between py-4">
-                  <span className="font-medium">{w.name}</span>
-                  <span className="font-display text-lg font-semibold">R{w.price}</span>
-                </li>
+                <div
+                  key={w.name}
+                  className="rounded-2xl bg-primary-foreground/10 backdrop-blur overflow-hidden flex flex-col"
+                >
+                  <div className="relative aspect-4/5 bg-primary-foreground/10">
+                    {w.image ? (
+                      <img
+                        src={w.image}
+                        alt={w.name}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <ImageIcon className="h-6 w-6 text-primary-foreground/40" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <p className="font-medium text-sm">{w.name}</p>
+                    <p className="mt-1 font-display font-semibold">R{w.price}</p>
+                  </div>
+                </div>
               ))}
-            </ul>
-
-            <div className="mt-8 rounded-2xl bg-primary-foreground/10 backdrop-blur p-6 lg:p-8 max-w-4xl">
-              <p className="font-script text-4xl text-accent">3 Day Resin Course</p>
-              <p className="mt-2 text-sm text-primary-foreground/85 leading-relaxed">
-                Three days, three resin pieces, hands-on guidance and our hard-earned
-                insights. Includes a beginner's guide, supplier list and the silicone
-                moulds you use are yours to keep.
-              </p>
             </div>
 
-            <Link
-              to="/book"
-              className="mt-8 inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-background text-primary px-8 py-3.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+            {riverTableDates.length > 0 && (
+              <div className="mt-8 max-w-4xl">
+                <p className="text-sm font-medium text-primary-foreground/85 mb-3">
+                  Upcoming river table dates
+                </p>
+                <div className="grid sm:grid-cols-3 gap-3">
+                  {riverTableDates.map((d) => (
+                    <div
+                      key={d.date}
+                      className={`rounded-xl bg-primary-foreground/10 backdrop-blur p-4 ${
+                        d.full ? "opacity-60" : ""
+                      }`}
+                    >
+                      <p className="text-sm font-semibold">{d.date}</p>
+                      {d.note && (
+                        <p className="mt-0.5 text-xs text-primary-foreground/70">{d.note}</p>
+                      )}
+                      {d.full && (
+                        <span className="mt-1 inline-block text-xs font-medium text-accent">
+                          Fully booked
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setBookingModal("river")}
+              className="mt-8 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-background text-primary px-8 py-3.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
             >
-              Enquire & book
-            </Link>
+              <MessageCircle className="h-4 w-4" />
+              Book a river table
+            </button>
           </div>
         </div>
 
-        {/* Private & Corporate Sessions */}
-        <div className="rounded-3xl border border-border p-8 lg:p-12 grid md:grid-cols-3 gap-8 items-center bg-background shadow-soft">
-          <div className="md:col-span-2">
-            <p className="font-script text-4xl text-primary">Private & corporate</p>
-            <h3 className="mt-1 font-display text-3xl font-semibold">Team buildings & private workshops</h3>
-            <p className="mt-3 text-muted-foreground leading-relaxed">
-              Birthdays, hen parties, team-building events or just a fun day with
-              friends. Hosted at our studio or yours, on a date that suits you.
-              Choose from trinket trays, coasters, cheeseboards, side tables and more.
+        {/* 3. PRIVATE, CORPORATE & OFFSITE */}
+        <div id="private-workshops" className="rounded-3xl border border-border p-8 lg:p-12 flex flex-col md:flex-row gap-8 items-center bg-background shadow-soft justify-between">
+          <div className="space-y-3 max-w-2xl">
+            <p className="font-script text-6xl text-primary">Private, corporate & offsite</p>
+            <h3 className="font-display text-3xl font-semibold">
+              Team buildings & private workshops
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              Birthdays, team-building events or just a fun day
+              with friends. Hosted in Goodwood, at your venue, or
+              anywhere in Cape Town — choose from trinket trays, coasters,
+              cheeseboards, side tables and more.
             </p>
+            <ul className="space-y-1.5 text-sm text-muted-foreground">
+              <li>• Private sessions — just for you and your group</li>
+              <li>• Corporate events — team-building with a take-home piece</li>
+              <li>• Offsite — we bring the workshop to your venue</li>
+            </ul>
           </div>
-          <div className="flex md:justify-end w-full">
-            <Link
-              to="/book"
-              className="inline-flex w-full md:w-auto items-center justify-center rounded-full border border-primary text-primary px-8 py-3.5 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
+          <div className="flex shrink-0 w-full md:w-auto">
+            <a
+              href={waLink(
+                "Hi! I'd like to enquire about a private/corporate/offsite resin workshop."
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full md:w-auto items-center justify-center gap-2 rounded-full border border-primary text-primary px-8 py-3.5 text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
             >
+              <MessageCircle className="h-4 w-4" />
               Plan a private session
-            </Link>
+            </a>
           </div>
         </div>
-
       </section>
+
+      {/* BOOKING MODALS */}
+      <Modal
+        open={bookingModal === "standard"}
+        onClose={() => setBookingModal(null)}
+        title="Book a workshop"
+      >
+        <BookingForm
+          workshopOptions={standardWorkshops}
+          availableDates={standardDates}
+          onClose={() => setBookingModal(null)}
+        />
+      </Modal>
+
+      <Modal
+        open={bookingModal === "river"}
+        onClose={() => setBookingModal(null)}
+        title="Book a river table workshop"
+      >
+        <BookingForm
+          workshopOptions={riverTableWorkshops}
+          availableDates={riverTableDates}
+          onClose={() => setBookingModal(null)}
+        />
+      </Modal>
     </>
   );
 }

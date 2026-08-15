@@ -11,18 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkshopsRouteImport } from './routes/workshops'
 import { Route as StarterKitRouteImport } from './routes/starter-kit'
-import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as ProductsRouteImport } from './routes/products'
 import { Route as CustomRouteImport } from './routes/custom'
+import { Route as CoursesRouteImport } from './routes/courses'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BookRouteImport } from './routes/book'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as AdminWorkshopsRouteImport } from './routes/admin.workshops'
-import { Route as AdminStarterKitOrdersRouteImport } from './routes/admin.starter-kit-orders'
-import { Route as AdminReservationsRouteImport } from './routes/admin.reservations'
-import { Route as AdminPrivateBookingsRouteImport } from './routes/admin.private-bookings'
-import { Route as AdminCustomRequestsRouteImport } from './routes/admin.custom-requests'
 
 const WorkshopsRoute = WorkshopsRouteImport.update({
   id: '/workshops',
@@ -34,14 +28,19 @@ const StarterKitRoute = StarterKitRouteImport.update({
   path: '/starter-kit',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GalleryRoute = GalleryRouteImport.update({
-  id: '/gallery',
-  path: '/gallery',
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CustomRoute = CustomRouteImport.update({
   id: '/custom',
   path: '/custom',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoursesRoute = CoursesRouteImport.update({
+  id: '/courses',
+  path: '/courses',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -54,152 +53,83 @@ const BookRoute = BookRouteImport.update({
   path: '/book',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminWorkshopsRoute = AdminWorkshopsRouteImport.update({
-  id: '/workshops',
-  path: '/workshops',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminStarterKitOrdersRoute = AdminStarterKitOrdersRouteImport.update({
-  id: '/starter-kit-orders',
-  path: '/starter-kit-orders',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminReservationsRoute = AdminReservationsRouteImport.update({
-  id: '/reservations',
-  path: '/reservations',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPrivateBookingsRoute = AdminPrivateBookingsRouteImport.update({
-  id: '/private-bookings',
-  path: '/private-bookings',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminCustomRequestsRoute = AdminCustomRequestsRouteImport.update({
-  id: '/custom-requests',
-  path: '/custom-requests',
-  getParentRoute: () => AdminRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
+  '/courses': typeof CoursesRoute
   '/custom': typeof CustomRoute
-  '/gallery': typeof GalleryRoute
+  '/products': typeof ProductsRoute
   '/starter-kit': typeof StarterKitRoute
   '/workshops': typeof WorkshopsRoute
-  '/admin/custom-requests': typeof AdminCustomRequestsRoute
-  '/admin/private-bookings': typeof AdminPrivateBookingsRoute
-  '/admin/reservations': typeof AdminReservationsRoute
-  '/admin/starter-kit-orders': typeof AdminStarterKitOrdersRoute
-  '/admin/workshops': typeof AdminWorkshopsRoute
-  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
+  '/courses': typeof CoursesRoute
   '/custom': typeof CustomRoute
-  '/gallery': typeof GalleryRoute
+  '/products': typeof ProductsRoute
   '/starter-kit': typeof StarterKitRoute
   '/workshops': typeof WorkshopsRoute
-  '/admin/custom-requests': typeof AdminCustomRequestsRoute
-  '/admin/private-bookings': typeof AdminPrivateBookingsRoute
-  '/admin/reservations': typeof AdminReservationsRoute
-  '/admin/starter-kit-orders': typeof AdminStarterKitOrdersRoute
-  '/admin/workshops': typeof AdminWorkshopsRoute
-  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
+  '/courses': typeof CoursesRoute
   '/custom': typeof CustomRoute
-  '/gallery': typeof GalleryRoute
+  '/products': typeof ProductsRoute
   '/starter-kit': typeof StarterKitRoute
   '/workshops': typeof WorkshopsRoute
-  '/admin/custom-requests': typeof AdminCustomRequestsRoute
-  '/admin/private-bookings': typeof AdminPrivateBookingsRoute
-  '/admin/reservations': typeof AdminReservationsRoute
-  '/admin/starter-kit-orders': typeof AdminStarterKitOrdersRoute
-  '/admin/workshops': typeof AdminWorkshopsRoute
-  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin'
     | '/book'
     | '/contact'
+    | '/courses'
     | '/custom'
-    | '/gallery'
+    | '/products'
     | '/starter-kit'
     | '/workshops'
-    | '/admin/custom-requests'
-    | '/admin/private-bookings'
-    | '/admin/reservations'
-    | '/admin/starter-kit-orders'
-    | '/admin/workshops'
-    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/book'
     | '/contact'
+    | '/courses'
     | '/custom'
-    | '/gallery'
+    | '/products'
     | '/starter-kit'
     | '/workshops'
-    | '/admin/custom-requests'
-    | '/admin/private-bookings'
-    | '/admin/reservations'
-    | '/admin/starter-kit-orders'
-    | '/admin/workshops'
-    | '/admin'
   id:
     | '__root__'
     | '/'
-    | '/admin'
     | '/book'
     | '/contact'
+    | '/courses'
     | '/custom'
-    | '/gallery'
+    | '/products'
     | '/starter-kit'
     | '/workshops'
-    | '/admin/custom-requests'
-    | '/admin/private-bookings'
-    | '/admin/reservations'
-    | '/admin/starter-kit-orders'
-    | '/admin/workshops'
-    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRouteWithChildren
   BookRoute: typeof BookRoute
   ContactRoute: typeof ContactRoute
+  CoursesRoute: typeof CoursesRoute
   CustomRoute: typeof CustomRoute
-  GalleryRoute: typeof GalleryRoute
+  ProductsRoute: typeof ProductsRoute
   StarterKitRoute: typeof StarterKitRoute
   WorkshopsRoute: typeof WorkshopsRoute
 }
@@ -220,11 +150,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StarterKitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/gallery': {
-      id: '/gallery'
-      path: '/gallery'
-      fullPath: '/gallery'
-      preLoaderRoute: typeof GalleryRouteImport
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/custom': {
@@ -232,6 +162,13 @@ declare module '@tanstack/react-router' {
       path: '/custom'
       fullPath: '/custom'
       preLoaderRoute: typeof CustomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/courses': {
+      id: '/courses'
+      path: '/courses'
+      fullPath: '/courses'
+      preLoaderRoute: typeof CoursesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -248,13 +185,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -262,78 +192,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/workshops': {
-      id: '/admin/workshops'
-      path: '/workshops'
-      fullPath: '/admin/workshops'
-      preLoaderRoute: typeof AdminWorkshopsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/starter-kit-orders': {
-      id: '/admin/starter-kit-orders'
-      path: '/starter-kit-orders'
-      fullPath: '/admin/starter-kit-orders'
-      preLoaderRoute: typeof AdminStarterKitOrdersRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/reservations': {
-      id: '/admin/reservations'
-      path: '/reservations'
-      fullPath: '/admin/reservations'
-      preLoaderRoute: typeof AdminReservationsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/private-bookings': {
-      id: '/admin/private-bookings'
-      path: '/private-bookings'
-      fullPath: '/admin/private-bookings'
-      preLoaderRoute: typeof AdminPrivateBookingsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/custom-requests': {
-      id: '/admin/custom-requests'
-      path: '/custom-requests'
-      fullPath: '/admin/custom-requests'
-      preLoaderRoute: typeof AdminCustomRequestsRouteImport
-      parentRoute: typeof AdminRoute
-    }
   }
 }
 
-interface AdminRouteChildren {
-  AdminCustomRequestsRoute: typeof AdminCustomRequestsRoute
-  AdminPrivateBookingsRoute: typeof AdminPrivateBookingsRoute
-  AdminReservationsRoute: typeof AdminReservationsRoute
-  AdminStarterKitOrdersRoute: typeof AdminStarterKitOrdersRoute
-  AdminWorkshopsRoute: typeof AdminWorkshopsRoute
-  AdminIndexRoute: typeof AdminIndexRoute
-}
-
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminCustomRequestsRoute: AdminCustomRequestsRoute,
-  AdminPrivateBookingsRoute: AdminPrivateBookingsRoute,
-  AdminReservationsRoute: AdminReservationsRoute,
-  AdminStarterKitOrdersRoute: AdminStarterKitOrdersRoute,
-  AdminWorkshopsRoute: AdminWorkshopsRoute,
-  AdminIndexRoute: AdminIndexRoute,
-}
-
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRouteWithChildren,
   BookRoute: BookRoute,
   ContactRoute: ContactRoute,
+  CoursesRoute: CoursesRoute,
   CustomRoute: CustomRoute,
-  GalleryRoute: GalleryRoute,
+  ProductsRoute: ProductsRoute,
   StarterKitRoute: StarterKitRoute,
   WorkshopsRoute: WorkshopsRoute,
 }

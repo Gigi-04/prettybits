@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { Mail, Phone, MapPin, Instagram, MessageCircle } from "lucide-react";
-import { useState } from "react";
+
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -15,15 +16,49 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const search = useSearch({ from: "/contact" }) as { enquiry?: string; product?: string };
+
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [fields, setFields] = useState({ name: "", email: "", phone: "", enquiry_type: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [contactMethod, setContactMethod] = useState<"email" | "whatsapp">("email");
+
+  // Single declaration initialized directly from search parameters
+  const [fields, setFields] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    enquiry_type: search?.enquiry || "",
+    message: search?.product
+      ? `Hi! I would like to enquire about making a custom ${search.product}.`
+      : "",
+  });
+
+  // Optional: Sync search parameters if the user navigates while staying on the page
+  useEffect(() => {
+    if (search?.enquiry || search?.product) {
+      setFields((prev) => ({
+        ...prev,
+        enquiry_type: search?.enquiry || prev.enquiry_type,
+        message: search?.product
+          ? `Hi! I would like to enquire about making a custom ${search.product}.`
+          : prev.message,
+      }));
+    }
+  }, [search?.enquiry, search?.product]);
+  
 
   function validate() {
     const e: Record<string, string> = {};
     if (!fields.name.trim()) e.name = "Please enter your name.";
-    if (!fields.email.trim()) e.email = "Please enter your email address.";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) e.email = "Please enter a valid email address.";
+    
+    // Email is only strictly required if sending via email
+    if (contactMethod === "email") {
+      if (!fields.email.trim()) e.email = "Please enter your email address.";
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) e.email = "Please enter a valid email address.";
+    } else if (fields.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
+      e.email = "Please enter a valid email address.";
+    }
+
     if (!fields.phone.trim()) e.phone = "Please enter your phone number.";
     if (!fields.enquiry_type) e.enquiry_type = "Please select an enquiry type.";
     if (!fields.message.trim()) e.message = "Please enter a message.";
@@ -38,8 +73,22 @@ function ContactPage() {
       return;
     }
     setErrors({});
-    setStatus("loading");
 
+    // Direct to WhatsApp
+    if (contactMethod === "whatsapp") {
+      const whatsappNumber = "27834411311";
+      const text = `Hi PrettyBits! 👋\n\n*Name:* ${fields.name}\n*Phone:* ${fields.phone}\n*Email:* ${fields.email || "N/A"}\n*Enquiry Type:* ${fields.enquiry_type}\n\n*Message:*\n${fields.message}`;
+      
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      
+      setStatus("success");
+      setFields({ name: "", email: "", phone: "", enquiry_type: "", message: "" });
+      return;
+    }
+
+    // Direct to Email via Web3Forms
+    setStatus("loading");
     const form = e.currentTarget;
     const data = new FormData(form);
 
@@ -64,13 +113,12 @@ function ContactPage() {
     <>
       <section className="bg-gradient-hero">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 lg:py-24 text-center">
-          <p className="font-script text-5xl text-primary">Get in touch</p>
+          <p className="font-script text-7xl text-primary">Get in touch</p>
           <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance">
             We'd love to hear from you.
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-xl mx-auto">
-            Custom commissions, workshop questions, or just want to say hi —
-            our DMs are always open.
+            Custom commissions, workshop questions, or any other enquiries - please contact us below.
           </p>
         </div>
       </section>
@@ -171,6 +219,7 @@ function ContactPage() {
                     <option value="Custom Commission">Custom Commission</option>
                     <option value="Workshop Booking">Workshop Booking</option>
                     <option value="Product Question">Product Question</option>
+                    <option value="3 Day Resin Course">3 Day Resin Course</option>
                     <option value="Other">Other</option>
                   </select>
                   {errors.enquiry_type && <p className="text-xs text-red-500">{errors.enquiry_type}</p>}
@@ -192,13 +241,54 @@ function ContactPage() {
                   {errors.message && <p className="text-xs text-red-500">{errors.message}</p>}
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={status === "loading"}
-                  className="mt-2 rounded-xl bg-primary px-6 py-3 font-display font-semibold text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-60"
-                >
-                  {status === "loading" ? "Sending..." : "Send message"}
-                </button>
+                <div className="flex flex-col gap-2 pt-2">
+                <label className="text-sm font-medium">How would you like to send this?</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setContactMethod("email")}
+                    className={`flex items-center justify-center gap-2 rounded-xl border p-3 text-sm font-medium transition-all ${
+                      contactMethod === "email"
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border text-muted-foreground hover:border-primary/50"
+                    }`}
+                  >
+                    <Mail className="h-4 w-4" />
+                    Email Form
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setContactMethod("whatsapp")}
+                    className={`flex items-center justify-center gap-2 rounded-xl border p-3 text-sm font-medium transition-all ${
+                      contactMethod === "whatsapp"
+                        ? "border-emerald-600 bg-emerald-500/10 text-emerald-600"
+                        : "border-border text-muted-foreground hover:border-emerald-500/50"
+                    }`}
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    WhatsApp
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className={`mt-2 flex items-center justify-center gap-2 rounded-xl px-6 py-3 font-display font-semibold transition-opacity disabled:opacity-60 ${
+                  contactMethod === "whatsapp"
+                    ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                    : "bg-primary text-primary-foreground hover:opacity-90"
+                }`}
+              >
+                {contactMethod === "whatsapp" ? (
+                  <>
+                    <MessageCircle className="h-5 w-5" />
+                    Send via WhatsApp
+                  </>
+                ) : (
+                  <>{status === "loading" ? "Sending..." : "Send Message"}</>
+                )}
+              </button>
 
                 {status === "error" && (
                   <p className="text-center text-sm text-red-500 font-medium">
