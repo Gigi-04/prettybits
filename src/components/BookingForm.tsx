@@ -211,38 +211,38 @@ export function BookingForm({
 
         <div className="mt-3 space-y-2">
           {items.map((row) => (
-            <div key={row.id} className="flex items-center gap-2">
-              <select
-                value={row.workshopName}
-                onChange={(e) => updateItem(row.id, { workshopName: e.target.value })}
-                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm"
-              >
-                {workshopOptions.map((w) => (
-                  <option key={w.name} value={w.name}>
-                    {w.name} — R{w.price}pp
-                  </option>
-                ))}
-              </select>
-              <input
-                type="number"
-                min={1}
-                value={row.quantity}
-                onChange={(e) =>
-                  updateItem(row.id, { quantity: Number(e.target.value) })
-                }
-                className="w-16 rounded-lg border border-border px-2 py-2 text-sm text-center"
-                aria-label="Quantity"
-              />
-              <button
-                type="button"
-                onClick={() => removeItem(row.id)}
-                disabled={items.length === 1}
-                aria-label="Remove item"
-                className="p-2 rounded-lg text-muted-foreground hover:text-red-600 hover:bg-red-50 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
-            </div>
+            <div key={row.id} className="flex items-center gap-1.5">
+            <select
+              value={row.workshopName}
+              onChange={(e) => updateItem(row.id, { workshopName: e.target.value })}
+              className="flex-1 min-w-0 rounded-lg border border-border px-2 py-2 text-xs"
+            >
+              {workshopOptions.map((w) => (
+                <option key={w.name} value={w.name}>
+                  {w.name} (R{w.price})
+                </option>
+              ))}
+            </select>
+            <input
+              type="number"
+              min={1}
+              value={row.quantity}
+              onChange={(e) =>
+                updateItem(row.id, { quantity: Number(e.target.value) })
+              }
+              className="w-12 rounded-lg border border-border px-1 py-2 text-sm text-center"
+              aria-label="Quantity"
+            />
+            <button
+              type="button"
+              onClick={() => removeItem(row.id)}
+              disabled={items.length === 1}
+              aria-label="Remove item"
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-red-600 hover:bg-red-50 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          </div>
           ))}
         </div>
 

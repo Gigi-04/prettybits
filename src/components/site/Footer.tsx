@@ -51,7 +51,7 @@ export function Footer() {
         <div>
           <h4 className="text-sm font-semibold text-foreground tracking-wide uppercase">Visit</h4>
           <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <li>PrettyBits Studio</li>
+            <li>PrettyBits </li>
             <li>Goodwood, Cape Town</li>
             <li>South Africa</li>
             <li className="pt-2 text-foreground">+27 83 441 1311</li>
@@ -86,7 +86,7 @@ export function Footer() {
       <div className="border-t border-border/60">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} PrettyBits. All rights reserved.</p>
-          <p>Handcrafted with care.</p>
+          <p>Lets Get Creative.</p>
         </div>
       </div>
     </footer>

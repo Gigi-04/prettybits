@@ -121,7 +121,7 @@ function WorkshopOptionCard({
           </div>
         )}
       </div>
-      <div className="p-4 flex items-center justify-between gap-2">
+      <div className="p-4 flex flex-wrap items-center justify-between gap-2">
         <span className="font-medium text-sm leading-snug">{name}</span>
         <span className="font-display text-base font-semibold text-primary whitespace-nowrap">
           R{price}pp
