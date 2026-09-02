@@ -181,9 +181,9 @@ function ProductsPage() {
       {/* Hero Section with Creative Wording */}
       <section className="bg-gradient-hero border-b border-border/40">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 lg:py-24 text-center">
-          <p className="font-script text-7xl text-primary">Made to Be Yours</p>
+          <p className="font-script text-7xl text-primary">Made To Be Yours</p>
           <h1 className="mt-3 font-display text-5xl lg:text-6xl font-semibold text-balance max-w-3xl mx-auto">
-            Custom resin creations
+            Custom Resin Creations
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
            From elegant wedding pieces and preserved flowers to statement art and wonderfully
@@ -205,9 +205,7 @@ function ProductsPage() {
       {/* Custom Commission CTA Banner */}
       <section className="bg-secondary/40 border-t border-border py-20">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 text-center">
-          <div className="inline-flex items-center justify-center h-12 w-12 rounded-2xl bg-primary/10 text-primary mb-4">
-            <Sparkles className="h-6 w-6" />
-          </div>
+          
           <h2 className="font-display text-3xl lg:text-4xl font-semibold">
             Envisioning something completely unique?
           </h2>

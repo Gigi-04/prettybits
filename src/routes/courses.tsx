@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { CheckCircle2, Clock, MapPin, Sparkles, AlertTriangle, MessageCircle, ChevronLeft, ChevronRight, Layers, ArrowRight } from "lucide-react";
+import { CheckCircle2, Clock,  MapPin, Sparkles, AlertTriangle, MessageCircle, ChevronLeft, ChevronRight, Layers, ArrowRight, Tag, Palette } from "lucide-react";
 
 import flowersImg from "@/assets/Flower Hexagon 3.jpeg";
 import customImg from "@/assets/Custom Geode (birthday).jpeg";
@@ -126,7 +126,7 @@ function CoursesPage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-background rounded-2xl border border-border p-6 shadow-sm">
           <div className="flex items-center gap-3.5 p-2">
             <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-              <Sparkles className="h-5 w-5" />
+              <Tag className="h-5 w-5" />
             </div>
             <div>
               <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Price</p>
@@ -146,7 +146,7 @@ function CoursesPage() {
 
           <div className="flex items-center gap-3.5 p-2">
             <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-              <Layers className="h-5 w-5" />
+              <Palette className="h-5 w-5"/>
             </div>
             <div>
               <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Items Made</p>

@@ -73,8 +73,7 @@ const riverTableWorkshops = [
 ];
 
 const standardDates: WorkshopDate[] = [
-  { date: "Sunday, 23 August", time: "2:00 PM", full: false },
-  { date: "Saturday, 29 August", time: "11:00 AM", full: false },
+  
   { date: "Saturday, 5 September", time: "11:00 AM", full: false },
   { date: "Sunday, 13 September", time: "2:00 PM", full: false },
   { date: "Saturday, 26 September", time: "2:00 PM", full: false },

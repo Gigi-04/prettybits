@@ -41,7 +41,7 @@ function HomePage() {
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10 pt-16 pb-24 lg:pt-24 lg:pb-32 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/60 backdrop-blur px-4 py-1.5 text-xs font-medium text-primary">
-              <Sparkles className="h-3.5 w-3.5" />
+              
               Handcrafted in Cape Town since 2021
             </span>
             <h1 className="mt-6 font-display text-5xl sm:text-6xl lg:text-7xl font-semibold leading-[1.05] text-foreground text-balance">
